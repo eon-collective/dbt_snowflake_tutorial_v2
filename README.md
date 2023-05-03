@@ -90,7 +90,13 @@
 
 # Overview <a name="dbt_project_overview"></a> [↑](#toc-)
 
-TODO: Add dbt project Documentation - The purpose/objective of this project.
+# Introduction
+
+This project makes use of dbt (a data transformation tool) to derive insights from data stored in the data warehouse(snowflake).
+
+# Objective
+
+To provide an organization standard for transforming and analyzing data in a data warehouse using dbt.
 
 ![Scheme](etc/images/UMM_Objective.png)
 
