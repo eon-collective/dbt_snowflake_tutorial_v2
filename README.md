@@ -132,9 +132,11 @@ Y -- consumed by --> Z>dashboard]
 
 The following raw tables are consumed by this project
 
-| **Database Name** |       **Schema**            |        **Table Name**       |     **NOTES**               |
-|:-----------------:|:---------------------------:|:---------------------------:|:---------------------------:|
-|                   |                             |                             |                             |
+| **DATABASE** | **SCHEMA**  | **TABLE** | **NOTES** |
+|:------------:|:-----------:|:---------:|:---------:|
+| RAW          | JAFFLE_SHOP | CUSTOMERS |           |
+| RAW          | JAFFLE_SHOP | ORDERS    |           |
+| RAW          | STRIPE      | PAYMENT   |           |
 
 [↑](#toc-)
 ###  Static/Seeds <a name="dbt_project_input_static_or_seeds"></a>
@@ -150,6 +152,20 @@ The following static tables are used by this project. Non-seed files are located
 
 [↑](#toc-)
 ## Cleansing/Transformation <a name="dbt_project_cleansing_and_transformation"></a>
+
+| **DATABASE** | **SCHEMA**   | **MODEL**                | **MATERIALIZATION** | **TAGS** | **NOTES** |
+|:------------:|:------------:|:------------------------:|:-------------------:|:--------:|:---------:|
+| RAW          | DBT_JANEROSE | CUSTOMER_ORDERS          | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_CUSTOMERS            | TABLE               | []       |           |
+| RAW          | DBT_JANEROSE | FCT_ORDERS               | EPHEMERAL           | []       |           |
+| RAW          | DBT_JANEROSE | INT_ORDERS_PIVOTED       | TABLE               | []       |           |
+| RAW          | DBT_JANEROSE | INT_ORDER_STATUS_PIVOTED | TABLE               | []       |           |
+| RAW          | DBT_JANEROSE | STR_PIVOTED_CUSTOMERS    | TABLE               | []       |           |
+| RAW          | DBT_JANEROSE | ALL_DATES                | TABLE               | []       |           |
+| RAW          | DBT_JANEROSE | STG_CUSTOMERS            | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_JAFFLE_SHOP_ORDERS   | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_ORDERS               | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_PAYMENTS             | VIEW                | []       |           |
 
 This project handles the following transformations/cleansing or curation details during its execution.
 
@@ -731,32 +747,3 @@ During the development of this project ......
 Please review the curover plan as templated in `../etc/CUTOVER_PLAN.md`
 
 [Back to top ↑](#toc-)
-
-# Sample output
-
-The TableConverted generated results:
-
-Below are the source tables in Snowflake:
-
-| **DATABASE** | **SCHEMA**  | **TABLE** | **NOTES** |
-|:------------:|:-----------:|:---------:|:---------:|
-| RAW          | JAFFLE_SHOP | CUSTOMERS |           |
-| RAW          | JAFFLE_SHOP | ORDERS    |           |
-| RAW          | STRIPE      | PAYMENT   |           |
-
-Below are the models created in Snowflake using dbt:
-
-| **DATABASE** | **SCHEMA**   | **MODEL**                | **MATERIALIZATION** | **TAGS** | **NOTES** |
-|:------------:|:------------:|:------------------------:|:-------------------:|:--------:|:---------:|
-| RAW          | DBT_JANEROSE | CUSTOMER_ORDERS          | VIEW                | []       |           |
-| RAW          | DBT_JANEROSE | DIM_CUSTOMERS            | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | FCT_ORDERS               | EPHEMERAL           | []       |           |
-| RAW          | DBT_JANEROSE | INT_ORDERS_PIVOTED       | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | INT_ORDER_STATUS_PIVOTED | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | STR_PIVOTED_CUSTOMERS    | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | ALL_DATES                | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | STG_CUSTOMERS            | VIEW                | []       |           |
-| RAW          | DBT_JANEROSE | STG_JAFFLE_SHOP_ORDERS   | VIEW                | []       |           |
-| RAW          | DBT_JANEROSE | STG_ORDERS               | VIEW                | []       |           |
-| RAW          | DBT_JANEROSE | STG_PAYMENTS             | VIEW                | []       |           |
-
