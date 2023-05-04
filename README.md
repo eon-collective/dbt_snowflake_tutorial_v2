@@ -90,13 +90,11 @@
 
 # Overview <a name="dbt_project_overview"></a> [↑](#toc-)
 
-# Introduction
+This project makes use of dbt, a data transformation tool, to derive insights from data stored in Snowflake.
 
-This project makes use of dbt (a data transformation tool) to derive insights from data stored in the data warehouse(snowflake).
+## Objective
 
-# Objective
-
-To provide an organization standard for transforming and analyzing data in a data warehouse using dbt.
+To provide an organizational standard for transforming and analyzing data in a data warehouse using dbt.
 
 ![Scheme](etc/images/UMM_Objective.png)
 
@@ -272,7 +270,7 @@ This application uses the following variables defined in the `dbt_project.yml` f
 
 ## Development Environment Setup <a name="dbt_project_development_environnment"></a> [↑](#toc-)
 
-There are two possible environents where development can happen while building in Bose COE environment. Namely: 
+There are two possible environments where development can happen while building in Bose COE environment. Namely: 
   1. Local Development - this can be IDE that is leveraging dbt core
   2. Cloud IDE - dbt cloud environment
 
@@ -733,4 +731,32 @@ During the development of this project ......
 Please review the curover plan as templated in `../etc/CUTOVER_PLAN.md`
 
 [Back to top ↑](#toc-)
+
+# Sample output
+
+The TableConverted generated results:
+
+Below are the source tables in Snowflake:
+
+| **DATABASE** | **SCHEMA**  | **TABLE** | **NOTES** |
+|:------------:|:-----------:|:---------:|:---------:|
+| RAW          | JAFFLE_SHOP | CUSTOMERS |           |
+| RAW          | JAFFLE_SHOP | ORDERS    |           |
+| RAW          | STRIPE      | PAYMENT   |           |
+
+Below are the models created in Snowflake using dbt:
+
+| **DATABASE** | **SCHEMA**   | **MODEL**                | **MATERIALIZATION** | **TAGS** | **NOTES** |
+|:------------:|:------------:|:------------------------:|:-------------------:|:--------:|:---------:|
+| RAW          | DBT_JANEROSE | CUSTOMER_ORDERS          | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_CUSTOMERS            | TABLE               | []       |           |
+| RAW          | DBT_JANEROSE | FCT_ORDERS               | EPHEMERAL           | []       |           |
+| RAW          | DBT_JANEROSE | INT_ORDERS_PIVOTED       | TABLE               | []       |           |
+| RAW          | DBT_JANEROSE | INT_ORDER_STATUS_PIVOTED | TABLE               | []       |           |
+| RAW          | DBT_JANEROSE | STR_PIVOTED_CUSTOMERS    | TABLE               | []       |           |
+| RAW          | DBT_JANEROSE | ALL_DATES                | TABLE               | []       |           |
+| RAW          | DBT_JANEROSE | STG_CUSTOMERS            | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_JAFFLE_SHOP_ORDERS   | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_ORDERS               | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_PAYMENTS             | VIEW                | []       |           |
 
