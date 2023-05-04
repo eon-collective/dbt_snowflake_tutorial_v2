@@ -16,3 +16,7 @@ packages:
     # in pipe-delimited csv format.
   - git: "https://github.com/eon-collective/dbt_readme_helper.git"
     revision: 0.1.1
+
+    # The package builds a mart of tables and views describing the project that it is installed in.
+  - git: "https://github.com/eon-collective/dbt_artifacts_eon.git"
+    revision: 0.2.0
