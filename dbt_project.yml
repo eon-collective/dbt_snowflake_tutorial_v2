@@ -36,3 +36,5 @@ models:
       +materialized: view
     marts:
       +materialized: table
+
+on-run-end: "{{ dbt_readme_logger.log_results_csv() }}"

@@ -12,3 +12,7 @@ packages:
     version: 0.7.0
   - package: tnightengale/dbt_meta_testing
     version: 0.3.6
+    # This package logs information about source, seed, & model nodes to the command line
+    # in pipe-delimited csv format.
+  - git: "https://github.com/eon-collective/dbt_readme_helper.git"
+    revision: 0.1.1
