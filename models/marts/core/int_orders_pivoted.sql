@@ -5,7 +5,7 @@
 WITH  -- 1st CTE -> gets all records from model stg_payments
 stripe_payments AS (
     SELECT * FROM {{ ref("stg_payments") }}
-    ),
+),
 
 pivoted_payments AS (
     -- 2nd CTE -> fetches records from 1st CTE and produces a summary of the

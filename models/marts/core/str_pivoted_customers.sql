@@ -12,7 +12,7 @@ cust_first_names AS (
 -- 2nd CTE -> fetches all customer first names from model stg_customers
 pivoted_customers AS (
     SELECT first_name FROM cust_first_names GROUP BY 1
-    )
+)
 
 SELECT *
 FROM pivoted_customers
