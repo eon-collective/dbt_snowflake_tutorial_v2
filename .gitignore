@@ -4,5 +4,3 @@ dbt_packages/
 logs/
 
 commands.txt
-
-profiles.yml

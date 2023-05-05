@@ -1,0 +1,25 @@
+snowflake-dwh:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: arb94990.us-east-1
+
+      # User/password auth
+      user: JANEROSE
+      password: P@55w0rd
+
+      role: ACCOUNTADMIN
+      database: RAW
+      warehouse: COMPUTE_WH
+      schema: dbt_janerose
+      threads: 4
+      client_session_keep_alive: True
+      query_tag: dbt_eon
+
+      # optional
+      connect_retries: 1 # default 0
+      connect_timeout: 5 # default: 10
+      retry_on_database_errors: False # default: false
+      retry_all: False  # default: false
+      reuse_connections: False # default: false (available v1.4+)
