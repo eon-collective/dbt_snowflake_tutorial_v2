@@ -60,8 +60,18 @@ jobs:
                 run: |
                   mkdir ~/.dbt
                   touch /root/.dbt/profiles.yml
+                  echo "Before"
+                  cat /root/.dbt/profiles.yml
                   echo -e "${{ steps.my_string.outputs.content }}" >> /root/.dbt/profiles.yml
+                  echo "After"
+                  cat /root/.dbt/profiles.yml
                   cd /work
                   ls -ltr /work
                   dbt deps
                   dbt build --select package:dbt_project_evaluator
+
+                  # echo -e "${{ steps.my_string.outputs.content }}" >> /root/.dbt/profiles.yml
+                  # cd /work
+                  # ls -ltr /work
+                  # dbt deps
+                  # dbt build --select package:dbt_project_evaluator
