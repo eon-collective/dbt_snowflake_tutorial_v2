@@ -69,9 +69,3 @@ jobs:
                   ls -ltr /work
                   dbt deps
                   dbt build --select package:dbt_project_evaluator
-
-                  # echo -e "${{ steps.my_string.outputs.content }}" >> /root/.dbt/profiles.yml
-                  # cd /work
-                  # ls -ltr /work
-                  # dbt deps
-                  # dbt build --select package:dbt_project_evaluator
