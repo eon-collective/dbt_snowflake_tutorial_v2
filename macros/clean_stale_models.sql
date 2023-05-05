@@ -8,8 +8,8 @@
     3. generates automated drop statements
     4. has the ability to execute those drop statements
 #}
-{# the query that should be run in the warehouse #}
-{# set block#}
+    {# the query that should be run in the warehouse #}
+    {# set block#}
     {% set get_drop_commands_query %}
         select
             case 
@@ -32,14 +32,14 @@
         and last_altered <= current_date - {{ days }} 
     {% endset %}
 
-{{ log("\nGenerating cleanup queries...\n", info=True) }}
+    {{ log("\nGenerating cleanup queries...\n", info=True) }}
 -- macro called run_query macro which provides a convenient way to run queries and
 -- fetch their results
 -- accepts the SQL query as a parameter
 {# Return the second column #}
-{% set drop_queries = run_query(get_drop_commands_query).columns[1].values() %}
+    {% set drop_queries = run_query(get_drop_commands_query).columns[1].values() %}
 
-{% for query in drop_queries %}
+    {% for query in drop_queries %}
 -- loop through the queries
 -- if dry_run is set to True then show query that is being executed
 {% if dry_run %} {{ log(query, info=True) }}

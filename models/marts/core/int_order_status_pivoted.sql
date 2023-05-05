@@ -6,27 +6,28 @@
     "returned",
 ] %}
 
-with  -- 1st CTE -> fetches all records from model stg_orders
-    order_status as (select * from {{ ref("stg_orders") }}),
+WITH  -- 1st CTE -> fetches all records from model stg_orders
+order_status AS (SELECT * FROM {{ ref("stg_orders") }}),
 
-    pivoted_orders as (
-        -- 2nd CTE -> fetches records from 1st CTE, query result set and produces a
-        -- summary of the
-        -- status of each customer order
-        select
-            order_id,
-            {% for list_status in order_status %}
-            sum(
-                case when status = '{{ list_status }}' then 1 else 0 end
-            ) as {{ list_status }}_order
+pivoted_orders AS (
+    -- 2nd CTE -> fetches records from 1st CTE, query result set and produces a
+    -- summary of the
+    -- status of each customer order
+    SELECT
+        order_id,
+        {% for list_status in order_status %}
+            SUM(
+                CASE WHEN status = '{{ list_status }}' THEN 1 ELSE 0 END
+            ) AS {{ list_status }}_order
             {% if not loop.last %}, {% endif %}
-            {% endfor %}
+        {% endfor %}
 
-        from order_status
-        group by 1
-    )
-select *
-from pivoted_orders
+    FROM order_status
+    GROUP BY 1
+)
+
+SELECT *
+FROM pivoted_orders
 
 -- The results returned from this query remind me of one hot encoding where categorical variables
 -- are converted into numerical values

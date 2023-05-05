@@ -11,12 +11,13 @@
     schema_pattern=schema_pat, table_pattern=table_pat
 ) -%}
 
-{% for table in tables %}
-{%- if not loop.first -%}
-union all
-{%- endif %}
+    {% for table in tables %}
+        {%- if not loop.first -%}
+            union all
+        {%- endif %}
 select *
 from {{ table.database }}.{{ table.schema }}.{{ table.name }}
 
-{% endfor -%}
+    {% endfor -%}
 {%- endmacro -%}
+
