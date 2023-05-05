@@ -4,9 +4,10 @@ WITH p AS (
         MAX(created) AS payment_finalized_date,
         SUM(amount) / 100.0 AS total_amount_paid
     FROM raw.stripe.payment
-    WHERE status != "fail"
+    WHERE status != 'fail'
     GROUP BY 1
 ),
+
 paid_orders AS (
     SELECT
         orders.id AS order_id,
@@ -25,32 +26,32 @@ paid_orders AS (
 
 customer_orders AS (
     SELECT
-        c.id AS customer_id,
-        MIN(order_date) AS first_order_date,
-        MAX(order_date) AS most_recent_order_date,
+        customers.id AS customer_id,
+        MIN(orders.order_date) AS first_order_date,
+        MAX(orders.order_date) AS most_recent_order_date,
         COUNT(orders.id) AS number_of_orders
-    FROM raw.jaffle_shop.customers AS c
+    FROM raw.jaffle_shop.customers
     LEFT JOIN raw.jaffle_shop.orders
-        ON orders.user_id = c.id
+        ON orders.user_id = customers.id
     GROUP BY 1
 )
 
 SELECT
     p.*,
-    ROW_NUMBER() OVER (ORDER BY p.order_id) AS transaction_seq,
-    ROW_NUMBER()
-        OVER (PARTITION BY customer_id ORDER BY p.order_id)
-        AS customer_sales_seq,
+    c.first_order_date AS fdos,
+    x.clv_bad AS customer_lifetime_value,
     CASE
         WHEN c.first_order_date = p.order_placed_at
-            THEN "new"
-        ELSE "return"
+            THEN 'new'
+        ELSE 'return'
     END AS nvsr,
-    x.clv_bad AS customer_lifetime_value,
-    c.first_order_date AS fdos
+
+    ROW_NUMBER() OVER (ORDER BY p.order_id) AS transaction_seq,
+
+    ROW_NUMBER() OVER (PARTITION BY p.customer_id ORDER BY p.order_id) AS customer_sales_seq  
 FROM paid_orders AS p
 LEFT JOIN customer_orders AS c ON p.customer_id = c.customer_id
-LEFT OUTER JOIN
+    LEFT OUTER JOIN
 (
     SELECT
         p.order_id,
@@ -63,4 +64,4 @@ LEFT OUTER JOIN
     ORDER BY p.order_id
 ) AS x
 ON x.order_id = p.order_id
-ORDER BY order_id
+ORDER BY x.order_id
