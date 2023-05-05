@@ -5,12 +5,11 @@ sql_file_exts = .sql,.sql.j2,.dml,.ddl
 ; [sqlfluff:rules]
 ; rules = L001, L002, L003, L004, L005, L006, L008, L009, L010, L011, L012, L013, L014, L015, L017, L018, L019, L020, L022, L023, L025, L026, L027, L028, L030, L035, L036, L038, L039, L040, L041, L043, L045, L046, L047, L048, L049, L050, L053, L054, L058, L059, L060, L061, L063, L064, L065
 
+; [sqlfluff:rules:L002]
+; tab_space_size = 4
 [sqlfluff:indentation]
 indent_unit = space
 tab_space_size = 4
-
-; [sqlfluff:rules:L002]
-; tab_space_size = 4
 
 ; [sqlfluff:rules:L004]
 ; indent_unit = space
