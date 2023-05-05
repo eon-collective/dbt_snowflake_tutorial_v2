@@ -1,7 +1,7 @@
 name: Run CI pipe for dbt projects
 on:
   push:
-    branches: [ "feature/*" ]
+    branches: [ "dbt_mart_auditor/*" ]
   pull_request:
     branches: [ "main" ]
 
