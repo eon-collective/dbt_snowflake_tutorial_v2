@@ -1,5 +1,7 @@
 WITH
-orders_source AS (SELECT * FROM {{ source("jaffle_shop", "orders") }}),
+orders_source AS (
+    SELECT * FROM {{ source("jaffle_shop", "orders") }}
+),
 
 transformed_orders AS (
     SELECT
@@ -11,7 +13,6 @@ transformed_orders AS (
             WHEN status NOT IN ('returned', 'return_pending') THEN order_date
         END AS valid_order_date
     FROM orders_source
-
 )
 
 SELECT *
