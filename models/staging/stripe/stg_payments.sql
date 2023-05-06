@@ -10,4 +10,4 @@ SELECT
 
 FROM {{ source("stripe", "payment") }}
 
-{{ limit_data_in_dev('created_at') }}
+    {{ limit_data_in_dev('created_at') }}
