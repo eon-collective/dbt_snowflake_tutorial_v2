@@ -1,24 +1,17 @@
-<img src="https://static.wixstatic.com/media/95af51_ae2122aebc944721a96afd10f3ccfe0c~mv2.png/v1/fill/w_329,h_45,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/95af51_ae2122aebc944721a96afd10f3ccfe0c~mv2.png" alt="drawing" width="200"/><a name="top-">
+<img src="https://static.wixstatic.com/media/95af51_ae2122aebc944721a96afd10f3ccfe0c~mv2.png/v1/fill/w_329,h_45,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/95af51_ae2122aebc944721a96afd10f3ccfe0c~mv2.png" alt="drawing" width="600"/><a name="top-">
 
-<p align="center">
 
-[![Run SQL Linting for dbt projects](https://github.com/eon-collective/dbt_project_template/actions/workflows/dbt_sql_linting.yml/badge.svg)](https://github.com/eon-collective/dbt_project_template/actions/workflows/dbt_sql_linting.yml)
+<div style="text-align:center;display:inline-flex;">
 
-</p>
+[![Run SQL Linting for dbt projects](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_sql_linting.yml/badge.svg)](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_sql_linting.yml)
 
-<p align="center">
+[![Run CI pipe for dbt projects](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe.yml/badge.svg)](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe.yml) 
 
-[![Run CI pipe for dbt projects](https://github.com/eon-collective/dbt_project_template/actions/workflows/dbt_ci_pipe.yml/badge.svg)](https://github.com/eon-collective/dbt_project_template/actions/workflows/dbt_ci_pipe.yml)
+[![Run CI pipe evaluator for dbt projects](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe_evaluator.yml/badge.svg)](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe_evaluator.yml)
 
-</p>
+</div>
 
-<p align="center">
-
-[![Run CI pipe for dbt projects](https://github.com/eon-collective/dbt_project_template/actions/workflows/dbt_ci_pipe_evaluator.yml/badge.svg)](https://github.com/eon-collective/dbt_project_template/actions/workflows/dbt_ci_pipe_evaluator.yml)
-
-</p>
-
-# Welcome to Eon Collective dbt® Project Template
+# Welcome to Eon Collective dbt® Practices
 
 ## Table Of Contents <a name="toc-"></a>
 - [Versions](#versions-)
@@ -78,8 +71,8 @@
 ## Revision History <a name="project_revisionhistory"></a> [↑](#toc-)
 
 |**Version** | **Revision Date** |
-| :-------: | :-------------: |
-|v1.0       | May 20, 2022    |
+|  :-------: | :-------------: |
+| v1.0       | May 20, 2022    |
 
 ## dbt Project Version <a name="dbt_project_version_info"></a> [↑](#toc-)
 
