@@ -1,5 +1,7 @@
 WITH
-customers AS (SELECT * FROM {{ ref("stg_customers") }}),
+customers AS (
+    SELECT * FROM {{ ref("stg_customers") }}
+),
 
 orders AS (SELECT * FROM {{ ref("fct_orders") }}),
 

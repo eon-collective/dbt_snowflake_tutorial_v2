@@ -7,7 +7,9 @@
 ] %}
 
 WITH  -- 1st CTE -> fetches all records from model stg_orders
-order_status AS (SELECT * FROM {{ ref("stg_orders") }}),
+order_status AS (
+    SELECT * FROM {{ ref("stg_orders") }}
+),
 
 pivoted_orders AS (
     -- 2nd CTE -> fetches records from 1st CTE, query result set and produces a
@@ -29,5 +31,6 @@ pivoted_orders AS (
 SELECT *
 FROM pivoted_orders
 
--- The results returned from this query remind me of one hot encoding where categorical variables
+-- The results returned from this query remind me of
+-- one hot encoding where categorical variables
 -- are converted into numerical values
