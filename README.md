@@ -72,22 +72,24 @@
 
 |**Version** | **Revision Date** |
 |  :-------: | :-------------: |
-| v1.0       | May 20, 2022    |
+|  1.0       | May 06, 2023    |
 
 ## dbt Project Version <a name="dbt_project_version_info"></a> [↑](#toc-)
 
 |**Version** | **Latest Version used for testing** | 
 | :--------: | :---------------------------------: | 
-| 1.0.0      |   1.0.3                             | 
+| 1.5        | 1.5                                 | 
 
 
 # Overview <a name="dbt_project_overview"></a> [↑](#toc-)
 
 This project makes use of dbt, a data transformation tool, to derive insights from data stored in Snowflake.
 
+It demonstrates a simple implementation of a dbt ELT job.
+
 ## Objective
 
-To provide an organizational standard for transforming and analyzing data in a data warehouse using dbt.
+To establish an organizational standard for transforming and analyzing data stored in a data warehouse using the data build tool (dbt).
 
 ![Scheme](etc/images/UMM_Objective.png)
 
@@ -97,11 +99,10 @@ To provide an organizational standard for transforming and analyzing data in a d
 TODO: Add dbt project Documentation - The high level overview of application overview.
 *you can put functional architecture diagram here: where is the data coming from? what does your application do at, any downstream applications etc*
 
-```mermaid
 graph LR
-A[source_A] -- ELT --> W{this dbt project}
-B[source_B] -- ELT --> W
-C[source_C] -- ELT --> W
+A[orders] -- ELT --> W{this dbt project}
+B[customers] -- ELT --> W
+C[payments] -- ELT --> W
 W -- dbt build: on_error --> X(notifications sent)
 X -- via --> V>email]
 X -- via --> U>slack]
@@ -116,7 +117,7 @@ Y -- consumed by --> T>application]
 Y -- consumed by --> Z>dashboard]
 
 
-```
+
 [↑](#toc-)
 ## Project Input <a name="dbt_project_input"></a> 
 
@@ -137,62 +138,67 @@ The following raw tables are consumed by this project
 The following static tables are used by this project. Non-seed files are located in the 
 's3://bose-bucket/*' folder. They get `COPY INTO` the appropriate tables using a storage integration.
 
-|                **FILE_NAME**                |    **SCHEMA**     |               **TABLE_NAME**               | **TARGET STRUCTURE NOTES** |
-|:-------------------------------------------:|:-----------------:|:------------------------------------------:|:--------------------------:|
-|                    SEED                     |    MCA_TABLE_!    |             DIM_SOURCE_SYSTEM              |  Loaded with `dbt seed` command run - loads static csv file found in the `data` folder of the project into snowflake table                          |
-
-
+| **FILENAME** | **DATABASE** | **SCHEMA**   | **SEED**                         | **NOTES** |
+|:------------:|:------------:|:------------:|:--------------------------------:|:---------:|
+|              | RAW          | DBT_JANEROSE | DBT_PROJECT_EVALUATOR_EXCEPTIONS |           |
 
 [↑](#toc-)
 ## Cleansing/Transformation <a name="dbt_project_cleansing_and_transformation"></a>
 
-| **DATABASE** | **SCHEMA**   | **MODEL**                | **MATERIALIZATION** | **TAGS** | **NOTES** |
-|:------------:|:------------:|:------------------------:|:-------------------:|:--------:|:---------:|
-| RAW          | DBT_JANEROSE | CUSTOMER_ORDERS          | VIEW                | []       |           |
-| RAW          | DBT_JANEROSE | DIM_CUSTOMERS            | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | FCT_ORDERS               | EPHEMERAL           | []       |           |
-| RAW          | DBT_JANEROSE | INT_ORDERS_PIVOTED       | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | INT_ORDER_STATUS_PIVOTED | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | STR_PIVOTED_CUSTOMERS    | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | ALL_DATES                | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | STG_CUSTOMERS            | VIEW                | []       |           |
-| RAW          | DBT_JANEROSE | STG_JAFFLE_SHOP_ORDERS   | VIEW                | []       |           |
-| RAW          | DBT_JANEROSE | STG_ORDERS               | VIEW                | []       |           |
-| RAW          | DBT_JANEROSE | STG_PAYMENTS             | VIEW                | []       |           |
+| **DATABASE** | **SCHEMA**   | **MODEL**                    | **MATERIALIZATION** | **TAGS** | **NOTES** |
+|:------------:|:------------:|:----------------------------:|:-------------------:|:--------:|:---------:|
+| RAW          | DBT_JANEROSE | FCT_DBT__MODEL_INFORMATION   | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | FCT_DBT__TEST_EXECUTIONS     | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | FCT_DBT__SNAPSHOT_EXECUTIONS | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__TESTS               | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__SNAPSHOTS           | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | FCT_DBT__SEED_EXECUTIONS     | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | FCT_DBT__MODEL_EXECUTIONS    | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__CURRENT_MODELS      | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__EXPOSURES           | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__MODELS              | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__SOURCES             | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__SEEDS               | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | FCT_DBT__INVOCATIONS         | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | MODEL_INFORMATION            | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | SNAPSHOT_EXECUTIONS          | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | TEST_EXECUTIONS              | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | EXPOSURES                    | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | MODELS                       | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | SEEDS                        | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | SOURCES                      | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | TESTS                        | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | SNAPSHOTS                    | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | SEED_EXECUTIONS              | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | MODEL_EXECUTIONS             | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | INVOCATIONS                  | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__INVOCATIONS         | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__MODEL_EXECUTIONS    | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__SEED_EXECUTIONS     | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__SNAPSHOTS           | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__TESTS               | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__EXPOSURES           | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__MODEL_INFORMATION   | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__SNAPSHOT_EXECUTIONS | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__TEST_EXECUTIONS     | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__SEEDS               | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__MODELS              | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__SOURCES             | VIEW                | []       |           |
 
-This project handles the following transformations/cleansing or curation details during its execution.
-
-| **SOURCE SCHEMA** | **SOURCE TABLE_NAME** |    **SCHEMA**     |    **TABLE_NAME**     | **TRANSFORMATION/CLEANSING/CURATION NOTES** |
-|:-----------------:|-----------------------|:-----------------:|:---------------------:|:-------------------------------------------:|
-|       BODS        | VW_DRM_PRODUCT        |     UMM_EMEA      |  DRM_PRODUCT_CURRENT  |    Shift certain "level" columns up by 1    |
-|                   |                       | UMM_EMEA_REF_DATA | VW_DRM_ENTITY_CURRENT | Uses SEED file instead of using source data |
-
-[↑](#toc-)
-## Project Output <a name="dbt_project_output"></a>
-
-This project produces the following tables in snowflake
-
-|    **SCHEMA**     |              **TABLE_NAME**               |             **TARGET STRUCTURE NOTES**             |
-|:-----------------:|:-----------------------------------------:|:--------------------------------------------------:|
-| UMM_EMEA_REF_DATA |                   DATES                   |                                                    |
 
 [↑](#toc-)
 ## Data Lineage <a name="dbt_project_data_lineage"></a>
 
 The full data lineage image isn't reader friendly when outputted to an image as it is too long and too wide. To generate and serve the docs on your machine
-see [dbt Commands: How to Run](#dbt_project_howtorun). *Note: In dbt data lineage diagrams green bubbles are sources and blue bubbles are models.*
+see [dbt Commands: How to Run](#dbt_project_howtorun).
+
+*Note: In dbt data lineage diagrams green bubbles are sources and blue bubbles are models.*
 
 [↑](#toc-) 
 ### Sample Data Lineages
-TODO: Replace with lineages
+etc/images/jaffle_shop_lineage.png
 
-**UMM_EMEA_STAGE Data Lineage**
-
-![Scheme](etc/images/umm_emea_stage_lineage.png "UMM_EMEA_STAGE Data Lineage")
-
-**UMM_EMEA_DW Data Lineage**
-
-![Scheme](etc/images/umm_emea_dw_lineage.png "UMM_EMEA_DW Data Lineage")
+etc/images/stripe_payment_lineage.png
 
 ## Functional Context <a name="dbt_project_functional_context"></a> [↑](#toc-)
 
@@ -271,10 +277,14 @@ This application uses the following variables defined in the `dbt_project.yml` f
 
 ## Project Packages/Dependencies <a name="dbt_project_packages_dependencies"></a> [↑](#toc-)
 
-| Package    | Version | Usage                                       |
-|------------|---------|---------------------------------------------|
-| dbt_utils  | 0.8.0   | Used for reusable macros and utils from dbt |
-
+| Package               | Version | Usage                                       |
+|-----------------------|---------|---------------------------------------------|
+| codegen               | 0.9.0   | Macros that generate dbt code, and log it to the command line. |
+| audit_helper          | 0.7.0   | Useful macros when performing data audits   |
+| dbt_meta_testing      | 0.3.6   | Contains macros to assert test and documentation coverage from dbt_project.yml configuration settings. |
+| dbt_readme_helper     | 0.1.1   | Logs information about source, seed, & model nodes to the command line in pipe-delimited csv format. |
+| dbt_artifacts_eon     | 0.2.0   | Builds a mart of tables and views describing the dbt project |
+| dbt_project_evaluator | 0.5.0   | Highlights areas of a dbt project that are misaligned with dbt Labs' best practices. |
 
 
 ## Development Environment Setup <a name="dbt_project_development_environnment"></a> [↑](#toc-)
