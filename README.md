@@ -210,38 +210,51 @@ etc/images/stripe_payment_lineage.png
 The project structure defined for dbt projects is as defined below:
 
 ```commandline
-.
-├── README.md
-├── analyses
-├── dbt_project.yml
-├── macros
-│   ├── enterprise_macros.sql
-│   ├── generate_hyp_entity.sql
-│   ├── generate_mr_type.sql
-│   ├── generate_mre_key.sql
-│   └── generate_schema.sql
-├── models
-│   ├── 1_stage
-│   │   └── sap
-│   │       ├── _src_sap.yml
-│   │       └── finance
-│   │           └── _config.yml
-│   ├── 2_intermediate
-│   │   └── finance
-│   │       └── _config.yml
-│   ├── 3_marts
-│   │   └── finance
-│   │       └── _config.yml
-│   └── 4_consumption
-│       ├── dashboards
-│       │   └── _config.yml
-│       └── data_science
-│           └── _config.yml
-├── packages.yml
-├── scratchpad
-├── seeds
-├── snapshots
-└── tests
+dbt_snowflake_tutorial_v2
+ ┣ analyses
+ ┃ ┣ interactive_ad_hoc_testing.sql
+ ┃ ┣ orders_by_day.sql
+ ┃ ┗ total_revenues.sql
+ ┣ etc
+ ┃ ┗ images
+ ┃ ┃ ┣ jaffle_shop_lineage.png
+ ┃ ┃ ┗ stripe_payment_lineage.png
+ ┃ ┗ project_tree_structure.md
+ ┣ logs
+ ┃ ┗ dbt.log
+ ┣ macros
+ ┃ ┣ cents_to_dollars.sql
+ ┃ ┣ clean_stale_models.sql
+ ┃ ┣ grant_select.sql
+ ┃ ┣ limit_data_dev.sql
+ ┃ ┗ union_tables_by_prefix.sql
+ ┣ models
+ ┃ ┣ marts
+ ┃ ┃ ┗ core
+ ┃ ┃ ┃ ┣ dim_customers.sql
+ ┃ ┃ ┃ ┣ fct_orders.sql
+ ┃ ┃ ┃ ┣ int_orders_pivoted.sql
+ ┃ ┃ ┃ ┣ int_order_status_pivoted.sql
+ ┃ ┃ ┃ ┗ str_pivoted_customers.sql
+ ┃ ┣ staging
+ ┃ ┃ ┣ jaffle_shop
+ ┃ ┃ ┃ ┣ jaffle_shop.md
+ ┃ ┃ ┃ ┣ sources.yml
+ ┃ ┃ ┃ ┣ src_jaffle_shop.yml
+ ┃ ┃ ┃ ┣ stg_customers.sql
+ ┃ ┃ ┃ ┣ stg_jaffle_shop.yml
+ ┃ ┃ ┃ ┣ stg_jaffle_shop_orders.sql
+ ┃ ┃ ┃ ┗ stg_orders.sql
+ ┃ ┃ ┣ stripe
+ ┃ ┃ ┃ ┣ sources.yml
+ ┃ ┃ ┃ ┣ src_stripe.yml
+ ┃ ┃ ┃ ┣ stg_payments.sql
+ ┃ ┃ ┃ ┣ stg_stripe.yml
+ ┃ ┃ ┃ ┗ stripe.md
+ ┃ ┃ ┗ all_dates.sql
+ ┃ ┗ .sqlfluff
+ ┣ tests
+ ┃ ┗ assert_positive_total_for_payments.sql
 ```
 This same project tree view above is persisted/versioned under *etc/project_tree_structure.md* - If project changes, please update both markdown documents.
 
@@ -452,9 +465,7 @@ becomes irrelevant because DBT uses the `CREATE OR REPLACE` command.
 ##	Introduction [↑](#toc-)
 Mart Auditor is a dbt package developed to capture runtime information about marts being executed in Bose COE data loads. These runtime metrics can be used to analyze data marts executed in past and for auditing purpose.
 ##	Design
-Any data mart that is developed in Bose COE project can plug in Mart Auditor package to capture data mart run time metrics. Mart Auditor creates two different tables i.e., Batch and Batch_Loging for all marts in database. These tables can be used to query to know past executions, errors, execution re tryâ€™s etc. 
-
-![Scheme](etc/images/mart_audit_model.png)
+Any data mart that is developed in Bose COE project can plug in Mart Auditor package to capture data mart run time metrics. Mart Auditor creates two different tables i.e., Batch and Batch_Loging for all marts in database. These tables can be used to query to know past executions, errors, execution retries etc. 
 
 Mart Auditor is a light weight dbt package that inserts records into above tables as mart progresses and creates table or views as part of model creating and execution. There is only one entry per execution of Mart in Batch table and multiple entries one per model in batch_logging table. Association between batch and batch_logging table is: 1 -> M
 
@@ -515,7 +526,6 @@ Once all the models in data mart are executed successfully then this macro updat
 *Note*: Mart Auditor is available in bitbucket at following location: 
 
 Bitbucket Location: 
-> ``
 
 1.	Add Mart Auditor package in packages.yml file like below example:
 
@@ -541,8 +551,6 @@ Bitbucket Location:
 Dataops Queries for this auditing this mart run are provided in the `analysis` folder with the file name `mart_auditor_dataops.sql`
 
 # Testing <a name="dbt_project_testing"></a> [↑](#toc-)
-
-*documentation placeholder - call out any tests being run in the project* 
 
 [dbt docs on testing](https://docs.getdbt.com/docs/building-a-dbt-project/tests)
 
@@ -717,25 +725,30 @@ This project utilizes the following SLA schedule.
 | 3 - Medium         | N/A                      | 5 Business Days            | In Region     |
 | 4 - Low            | N/A                      | 10 Business Days           | In Region     |
 
-# Troubleshoot/ F.A.Q <a name="dbt_troubleshoot"></a> [↑](#toc-)
+# Troubleshoot/FAQ <a name="dbt_troubleshoot"></a> [↑](#toc-)
 
-*documentation placeholder*
+[dbt FAQs](https://docs.getdbt.com/docs/faqs)
 
 ## Known Issues <a name="dbt_troubleshoot_known_issues"></a> [↑](#toc-)
 
-1. Existing data is lost or deleted after running `dbt docs generate` without the `--no-compile` flag.
+Existing data is lost or deleted after running `dbt docs generate` without the `--no-compile` flag.
    This is a known issue, since the project uses call statements that execute on the DW directly, if dbt internally executes a `compile` step, the call statements are executed. To avoid this behavior, use the `--no-compile` flag with the dbt docs generate command. See documentation on [dbt-docs-generate with --no-compile flag](https://docs.getdbt.com/reference/commands/cmd-docs#dbt-docs-generate) and [dbt execute](https://docs.getdbt.com/reference/dbt-jinja-functions/execute)
+   
    If existing data is lost, please rerun the data mart build using the **FULLREFRESH** plan and tasks.
 
 ## Debugging <a name="dbt_troubleshoot_debugging"></a> [↑](#toc-)
-1. [See dbt docs on Debugging errors](https://docs.getdbt.com/docs/guides/debugging-errors#general-process-of-debugging) - this has a comprehensive list and categorization of common errors seen on a typical dbt project. Note the [common pitfalls section](https://docs.getdbt.com/docs/guides/debugging-errors#common-pitfalls) also
+[See dbt docs on Debugging errors](https://docs.getdbt.com/docs/guides/debugging-errors#general-process-of-debugging) - this has a comprehensive list and categorization of common errors seen on a typical dbt project. Note the [common pitfalls section](https://docs.getdbt.com/docs/guides/debugging-errors#common-pitfalls) also
 
 
 # Additional Notes <a name="dbt_project_migration_notes"></a> [↑](#toc-)
 
-During the development of this project ......
+> This project builds on the tutorial which is located in [dbt fundamentals course](https://courses.getdbt.com/collections/courses)
 
-> Include any additional notes here for your project
+> The raw data was sourced from `s3://dbt-tutorial-public` and loaded into Snowflake. The raw data is stored as CSV files in a public S3 bucket.
+
+> The transformed data is stored in the RAW database. For best practices, the transformed data should be stored in a separate database in the data warehouse.
+
+> Rules were defined in a .sqlfluff file which can be found in the models directory. These rules enforce a consistent code style in all models.
 
 # Resources <a name="resources"></a> [↑](#toc-)
 
@@ -747,6 +760,6 @@ During the development of this project ......
 - Check out [dbt Developer blog on git cherry pick](https://docs.getdbt.com/blog/the-case-against-git-cherry-picking)
 
 # Cutover Plan <a name="cutover_plan"></a> [↑](#toc-)
-Please review the curover plan as templated in `../etc/CUTOVER_PLAN.md`
+TODO: `../etc/CUTOVER_PLAN.md`
 
 [Back to top ↑](#toc-)
