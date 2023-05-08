@@ -196,7 +196,9 @@ see [dbt Commands: How to Run](#dbt_project_howtorun).
 
 [↑](#toc-) 
 ### Sample Data Lineages
-etc/images/jaffle_shop_lineage.png
+(etc/images/jaffle_shop_lineage.png)
+
+(https://github.com/eon-collective/dbt_snowflake_tutorial_v2/blob/7c4b04db0bca240c46d8807032ca4ad3eb348456/etc/images/jaffle_shop_lineage.png)
 
 etc/images/stripe_payment_lineage.png
 
