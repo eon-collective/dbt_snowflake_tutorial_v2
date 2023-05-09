@@ -91,14 +91,13 @@ It demonstrates a simple implementation of a dbt ELT job.
 
 To establish an organizational standard for transforming and analyzing data stored in a data warehouse using the data build tool (dbt).
 
-![Scheme](etc/images/UMM_Objective.png)
-
 [↑](#toc-)
 # Application Functional Overview <a name="dbt_project_components"></a> 
 
 TODO: Add dbt project Documentation - The high level overview of application overview.
 *you can put functional architecture diagram here: where is the data coming from? what does your application do at, any downstream applications etc*
 
+```mermaid
 graph LR
 A[orders] -- ELT --> W{this dbt project}
 B[customers] -- ELT --> W
@@ -115,7 +114,7 @@ O -- generates --> S
 S -- stored in --> R>catalog.json]
 Y -- consumed by --> T>application]
 Y -- consumed by --> Z>dashboard]
-
+```
 
 
 [↑](#toc-)
@@ -144,6 +143,10 @@ The following static tables are used by this project. Non-seed files are located
 
 [↑](#toc-)
 ## Cleansing/Transformation <a name="dbt_project_cleansing_and_transformation"></a>
+
+This project handles the following transformations/cleansing or curation details during its execution.
+
+## Project output
 
 | **DATABASE** | **SCHEMA**   | **MODEL**                    | **MATERIALIZATION** | **TAGS** | **NOTES** |
 |:------------:|:------------:|:----------------------------:|:-------------------:|:--------:|:---------:|
@@ -189,21 +192,22 @@ The following static tables are used by this project. Non-seed files are located
 [↑](#toc-)
 ## Data Lineage <a name="dbt_project_data_lineage"></a>
 
-The full data lineage image isn't reader friendly when outputted to an image as it is too long and too wide. To generate and serve the docs on your machine
-see [dbt Commands: How to Run](#dbt_project_howtorun).
+The full data lineage image isn't reader friendly when outputted to an image as it is too long and too wide.
+
+To generate and serve the docs on your machine see [dbt Commands: How to Run](#dbt_project_howtorun).
 
 *Note: In dbt data lineage diagrams green bubbles are sources and blue bubbles are models.*
 
 [↑](#toc-) 
 ### Sample Data Lineages
-(etc/images/jaffle_shop_lineage.png)
 
-(https://github.com/eon-collective/dbt_snowflake_tutorial_v2/blob/7c4b04db0bca240c46d8807032ca4ad3eb348456/etc/images/jaffle_shop_lineage.png)
+Lineage graph for jaffle shop
+![Lineage graph for jaffle shop](etc/images/jaffle_shop_lineage.png)
 
-etc/images/stripe_payment_lineage.png
+Lineage graph for Stripe payments
+![Lineage graph for Stripe payments](etc/images/stripe_payment_lineage.png)
 
 ## Functional Context <a name="dbt_project_functional_context"></a> [↑](#toc-)
-
 
 # Using This dbt Project <a name="dbt_project_using_this_one"></a> [↑](#toc-)
 
@@ -255,8 +259,8 @@ dbt_snowflake_tutorial_v2
  ┃ ┃ ┃ ┗ stripe.md
  ┃ ┃ ┗ all_dates.sql
  ┃ ┗ .sqlfluff
- ┣ tests
- ┃ ┗ assert_positive_total_for_payments.sql
+ ┗ tests
+   ┗ assert_positive_total_for_payments.sql
 ```
 This same project tree view above is persisted/versioned under *etc/project_tree_structure.md* - If project changes, please update both markdown documents.
 
@@ -320,7 +324,9 @@ Below are instructions to get setup on both of these environments.
 
 2. #### Setup<a name="dbt_project_input_local_development"></a> [↑](#toc-)
 
-    Set up a profile called `dbt_project_template` to connect to a data warehouse by following [these instructions](https://docs.getdbt.com/docs/configure-your-profile). If you have access to a data warehouse, you can use those credentials â€“ we recommend setting your [target schema](https://docs.getdbt.com/docs/configure-your-profile#section-populating-your-profile) to be a new schema (dbt will create the schema for you, as long as you have the right privileges). If you don't have access to an existing data warehouse, you can also setup a local postgres database and connect to it in your profile.
+    Set up a profile called `dbt_project_template` to connect to a data warehouse by following [these instructions](https://docs.getdbt.com/docs/configure-your-profile). If you have access to a data warehouse, you can use those credentials. 
+    
+    We recommend setting your [target schema](https://docs.getdbt.com/docs/configure-your-profile#section-populating-your-profile) to be a new schema (dbt will create the schema for you, as long as you have the right privileges). If you don't have access to an existing data warehouse, you can also setup a local postgres database and connect to it in your profile.
     Open your terminal and navigate to your `profiles.yml`. This is in the `.dbt` hidden folder on your computer, located in your home directory.
 
     On macOS, you can open the file from your terminal similar to this (which is using the Atom text editor to open the file):
@@ -369,52 +375,54 @@ Below are instructions to get setup on both of these environments.
 3. Clone this repository
     
     ```console
-    $ git clone git@bitbucket.org:<organization>/dbt_project_template.git 
+    $ git@github.com:eon-collective/dbt_snowflake_tutorial_v2.git
     ```
 
-4. Change into the `dbt_project_template` directory from the command line:
+4. Change into the `dbt_snowflake_tutorial_v2` directory from the command line:
     ```console
-    $ cd dbt_project_template
+    $ cd dbt_snowflake_tutorial_v2
     ```
 
 5. Try running the following generic/common commands one at a time from your command line:
     - `dbt debug` - tests your connection. If this fails, check your profiles.yml.
     - `dbt deps`  - installs any packages defined in the packages.yml file.  
-    For project specific commands see the section below on [dbt Commands: How to Run](#dbt_project_howtorun)
-
+    
+    For project specific commands see the section below
+    [dbt Commands: How to Run](#dbt_project_howtorun)
 
 ### Developing in the Cloud IDE <a name="dbt_project_input_cloud_ide_development"></a> [↑](#toc-)
 
 The easiest way to contribute to this project is by developing in dbt Cloud. If you have access, navigate to the develop tab in the menu and fill out any required information to get connected.
 
-In the command line bar at the bottom of the interface, run the following generic/common commands one at a time:
+In the command line bar at the bottom of the interface, run the following generic/common command:
 
 - `dbt deps`  - installs any packages defined in the packages.yml file.
 
-For project specific commands see the section below on [dbt Commands: How to Run](#dbt_project_howtorun)
+For project specific commands see the section below:
+[dbt Commands: How to Run](#dbt_project_howtorun)
 
 # dbt Commands: How to Run <a name="dbt_project_howtorun"></a> [↑](#toc-)
 Assuming you have your environment setup as described in previous section, you can run the following commands to manage this dbt project during deployment.
 
-### To get dependencies:  <a name="dbt_howtorun_deps"></a> [↑](#toc-)
+### To install dependencies:  <a name="dbt_howtorun_deps"></a> [↑](#toc-)
 
-[dbt docs on deps command](https://docs.getdbt.com/reference/commands/deps)
+See [dbt docs on deps command](https://docs.getdbt.com/reference/commands/deps)
 
     dbt deps
 
 ### To compile the dbt project  <a name="dbt_howtorun_compile"></a> [↑](#toc-)
-Generates executable SQL from source model, test, and analysis files. You can find these compiled SQL files in the target/ directory of your dbt project in your development environment. [See dbt docs on compile](https://docs.getdbt.com/reference/commands/compile)
+Generates executable SQL from source model, test, and analysis files. You can find these compiled SQL files in the target/ directory of your dbt project in your development environment. See [dbt docs on compile](https://docs.getdbt.com/reference/commands/compile)
 
     dbt compile
 
 ### To get the documentation:  <a name="dbt_howtorun_docsgenerate"></a> [↑](#toc-)
-Generate documentation for the project. [See dbt docs on docs generate](https://docs.getdbt.com/reference/commands/cmd-docs#dbt-docs-generate)
+Generate documentation for the project. See [dbt docs on docs generate](https://docs.getdbt.com/reference/commands/cmd-docs#dbt-docs-generate)
 
     dbt docs generate --no-compile
 
 NOTE: since this project uses call statements in some of the dbt model that execute directly in the DW (snowflake), if dbt runs any compile step which includes `dbt docs generate`, existing data in the mart is lost since the call statements execute with `delete from {{this}} <where condition>`
 
-To view the generated in local IDE, run the following command to start a webserver on default port 8000 and serve the generated documents. [See dbt docs on docs serve](https://docs.getdbt.com/reference/commands/cmd-docs#dbt-docs-serve)
+To view the generated in local IDE, run the following command to start a webserver on default port 8000 and serve the generated documents. See [dbt docs on docs serve](https://docs.getdbt.com/reference/commands/cmd-docs#dbt-docs-serve)
 
     dbt docs serve
 
@@ -423,7 +431,7 @@ Builds any .csv files as tables in the warehouse. These are located in the data/
 
     dbt seed
 
-[dbt docs on seed](https://docs.getdbt.com/docs/building-a-dbt-project/seeds)
+See [dbt docs on seed](https://docs.getdbt.com/docs/building-a-dbt-project/seeds)
 
 ### Mart build <a name="dbt_howtorun_martbuild"></a> [↑](#toc-)
 
