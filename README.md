@@ -94,8 +94,7 @@ To establish an organizational standard for transforming and analyzing data stor
 [↑](#toc-)
 # Application Functional Overview <a name="dbt_project_components"></a> 
 
-TODO: Add dbt project Documentation - The high level overview of application overview.
-*you can put functional architecture diagram here: where is the data coming from? what does your application do at, any downstream applications etc*
+The high level overview of application overview.
 
 ```mermaid
 graph LR
