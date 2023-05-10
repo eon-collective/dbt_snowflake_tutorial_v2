@@ -426,7 +426,7 @@ To view the generated in local IDE, run the following command to start a webserv
     dbt docs serve
 
 ### Loading static/seed files <a name="dbt_howtorun_seed"></a> [↑](#toc-)
-Builds any .csv files as tables in the warehouse. These are located in the data/seed folder of the project. Otherwsie specified in the dbt_project.yml. This materializes the CSVs as tables in your target schema. Note that **not all projects require this step** since the assummption that raw data is already in your warehouse. See [dbt docs on seed](https://docs.getdbt.com/docs/building-a-dbt-project/seeds)
+Builds any .csv files as tables in the warehouse. These are located in the data/seed folder of the project. Otherwise specified in the dbt_project.yml. This materializes the CSVs as tables in your target schema. Note that **not all projects require this step** since the assummption is that raw data is already in your warehouse. See [dbt docs on seed](https://docs.getdbt.com/docs/building-a-dbt-project/seeds)
 
     dbt seed
 
@@ -546,16 +546,16 @@ Bitbucket Location:
 4.	You can call above macros in your dbt_proejct.yml file with below example:
 
     1. Insert_batch(dbt_mart_name, dbt_mart_refresh_type) : 
-        This macro accepts two parameters for Mart_name and Mart_refresh_type. Mart_refresh_type is optional parameter and if you donâ€™t provide refresh type parameter then it will insert NULL value into batch table. Call this macro at â€œon-run-startâ€ section of dbt_project.yml.
+        This macro accepts two parameters for Mart_name and Mart_refresh_type. Mart_refresh_type is optional parameter and if you donâ€™t provide refresh type parameter then it will insert NULL value into batch table. Call this macro at on-run-start section of dbt_project.yml.
 
     2. insert_batch_logging (dbt_mart_name, dbt_model_name, table_name, refresh_type):
-    This macro accepts four parameters for Mart_name, model_name, table_name and refresh_type. Table_name and refresh_type are optional parameters where table name takes model name and refresh_type takes null value by default if you donâ€™t supply. Call this macro at pre-hook section of dbt_project.yml. Pass current model name to the macro with keyword â€œthisâ€.
+    This macro accepts four parameters for Mart_name, model_name, table_name and refresh_type. Table_name and refresh_type are optional parameters where table name takes model name and refresh_type takes null value by default if you don't supply. Call this macro at pre-hook section of dbt_project.yml. Pass current model name to the macro with keyword â€œthisâ€.
 
     3. Update_batch_logging (dbt_mart_name, dbt_model_name, table_name, refresh_type):
-    This macro accepts four parameters for Mart_name, model_name, table_name and refresh_type. Table_name and refresh_type are optional parameters where table name takes model name and refresh_type takes null value by default if you donâ€™t supply. Call this macro at post-hook section of dbt_project.yml
+    This macro accepts four parameters for Mart_name, model_name, table_name and refresh_type. Table_name and refresh_type are optional parameters where table name takes model name and refresh_type takes null value by default if you don't supply. Call this macro at post-hook section of dbt_project.yml
 
     4. update_batch (dbt_mart_name, dbt_mart_refresh_type) : 
-    This macro accepts two parameters for Mart_name and Mart_refresh_type. Mart_refresh_type is optional parameter and if you donâ€™t provide refresh type parameter then it will insert null value into batch table. Call this macro at â€œon-run-endâ€ section of dbt_project.yml.
+    This macro accepts two parameters for Mart_name and Mart_refresh_type. Mart_refresh_type is optional parameter and if you donâ€™t provide refresh type parameter then it will insert null value into batch table. Call this macro at on-run-end section of dbt_project.yml.
 
 Dataops Queries for this auditing this mart run are provided in the `analysis` folder with the file name `mart_auditor_dataops.sql`
 
@@ -674,8 +674,7 @@ The following is a list of dbt_runner tasks needed to run this mart successfully
 
 #### (Re-)Loading seeded files <a name="dbt_howtorun_seed"></a> [↑](#toc-)
 
-Incase of changes to the static files that hosted within the dbt project in the `data` or `seeds` folder (varies with the project as specified by the seed-paths config in *dbt_project.yml*)
-Below steps should be followed to reload the seeded data once this project has been deployed to PRODUCTION.
+Incase of changes to the static files that are hosted within the dbt project in the `data` or `seeds` folder (varies with the project as specified by the seed-paths config in *dbt_project.yml*). Below are the steps that should be followed to reload the seeded data once this project has been deployed to PRODUCTION.
 
 1. Create a new feature branch from main
 2. Checkout feature branch to IDE

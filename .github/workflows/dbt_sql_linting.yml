@@ -31,5 +31,6 @@ jobs:
                 run: |
                   cd /work/models
                   sqlfluff --version
+                  pip list
                   ls -ltr
                   sqlfluff lint --dialect snowflake .
