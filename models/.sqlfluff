@@ -2,43 +2,21 @@
 templater = jinja
 sql_file_exts = .sql,.sql.j2,.dml,.ddl
 
-; [sqlfluff:rules]
-; rules = L001, L002, L003, L004, L005, L006, L008, L009, L010, L011, L012, L013, L014, L015, L017, L018, L019, L020, L022, L023, L025, L026, L027, L028, L030, L035, L036, L038, L039, L040, L041, L043, L045, L046, L047, L048, L049, L050, L053, L054, L058, L059, L060, L061, L063, L064, L065
-
-; [sqlfluff:rules:L002]
-; tab_space_size = 4
 [sqlfluff:indentation]
 indent_unit = space
 tab_space_size = 4
 
-; [sqlfluff:rules:L004]
-; indent_unit = space
-; tab_space_size = 4
-
-
 [sqlfluff:rules:capitalisation.keywords]
 capitalisation_policy = upper
-
-; [sqlfluff:rules:L010]
-; capitalisation_policy = upper
 
 [sqlfluff:rules:aliasing.table]
 aliasing = explicit
 
-; [sqlfluff:rules:L011]
-; aliasing = explicit
-
 [sqlfluff:rules:aliasing.column]
 aliasing = explicit
 
-; [sqlfluff:rules:L012]
-; aliasing = explicit
-
 [sqlfluff:rules]
 allow_scalar = True
-
-; [sqlfluff:rules:L013]
-; allow_scalar = true
 
 [sqlfluff:rules:capitalisation.identifiers]
 extended_capitalisation_policy = lower
@@ -47,73 +25,38 @@ extended_capitalisation_policy = lower
 ;  Keywords should not be used as identifiers.
 unquoted_identifiers_policy = all
 
-; [sqlfluff:rules:L014]
-; extended_capitalisation_policy = lower
-; unquoted_identifiers_policy = all
-
 [sqlfluff:layout:type:comma]
 line_position = trailing
-
-; [sqlfluff:rules:L019]
-; comma_style = trailing
 
 [sqlfluff:rules:references.from]
 ; References must be in FROM clause
 force_enable = True
 
-; [sqlfluff:rules:L026]
-; force_enable = true
-
 [sqlfluff:rules:references.consistent]
 ; References must be consistently used
 single_table_references = unqualified
 
-; [sqlfluff:rules:L028]
-; single_tab_references = unqualified
-
 [sqlfluff:rules:capitalisation.functions]
 extended_capitalisation_policy = upper
-
-; [sqlfluff:rules:L030]
-; extended_capitalisation_policy = upper
 
 [sqlfluff:rules:layout.select_targets]
 wildcard_policy = single
 
-; [sqlfluff:rules:L036]
-; wildcard_policy = single
-
 [sqlfluff:rules:convention.select_trailing_comma]
 select_clause_trailing_comma = forbid
 
-; [sqlfluff:rules:L038]
-; select_clause_trailing_comma = forbid
-
 [sqlfluff:rules:capitalisation.literals]
 capitalisation_policy = upper
-
-; [sqlfluff:rules:L040]
-; capitalisation_policy = upper
 
 [sqlfluff:rules:ambiguous.column_references]
 ; GROUP BY/ORDER BY column references
 group_by_and_order_by_style = explicit
 
-; [sqlfluff:rules:L054]
-; group_by_and_order_by_style = explicit
-
 [sqlfluff:rules:capitalisation.types]
 extended_capitalisation_policy = upper
-
-; [sqlfluff:rules:L063]
-; extended_capitalisation_policy = upper
 
 [sqlfluff:rules:convention.quoted_literals]
 ; Consistent usage of double quotes for quoted literals
 preferred_quoted_literal_style = double_quotes
 ; Enable for dialects that do not support single and double quotes for quoted literals (e.g. Postgres/Snowflake)
 force_enable = True
-
-; [sqlfluff:rules:L064]
-; force_enable = true
-; preferred_quoted_literal_style = double_quotes
