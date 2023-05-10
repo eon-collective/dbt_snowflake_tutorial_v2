@@ -13,7 +13,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: Upgrading pip
-          run:  python.exe -m pip install --upgrade pip
+          run:  pip install --upgrade pip
         - name: Install Python package using pip
           run: pip install sqlfluff-templater-dbt 
     compile:
