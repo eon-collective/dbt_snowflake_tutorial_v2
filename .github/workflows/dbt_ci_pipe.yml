@@ -1,7 +1,7 @@
 name: Run CI pipe for dbt projects
 on:
   push:
-    branches: [ "feature/*" ]
+    branches: [ "dbt_mart_auditor/*" ]
   pull_request:
     branches: [ "main" ]
 
@@ -19,7 +19,7 @@ env:
   
 jobs:
     compile:
-        name: Build and Compile dbt Project
+        name: Build and Compile dbt Project on dbt cloud
         runs-on: ubuntu-latest
         steps:
           - name: Check out the repo hosting the dbt project

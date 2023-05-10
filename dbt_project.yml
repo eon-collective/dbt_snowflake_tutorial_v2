@@ -7,6 +7,7 @@ version: '1.4.0'
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
+# profile: 'snowflake-dwh'
 profile: 'default'
 
 # These configurations specify where dbt should look for different types of files.
@@ -36,3 +37,19 @@ models:
       +materialized: view
     marts:
       +materialized: table
+  
+
+  #  specifying where the raw (sources) data is uploaded and where the dbt models are created
+  dbt_artifacts:
+    +schema: dbt_audit
+    +materialized: view
+    +on_schema_change: append_new_columns
+    +full_refresh: null
+
+# on-run-end: "{{ dbt_readme_logger.log_results_csv() }}"
+
+# Not pulling data from the INFORMATION_SCHEMA.TABLES in snowflake
+# on-run-end: "{{ dbt_artifacts.upload_results(results, include_information=true) }}"
+
+# to display the package results in the logs in addition to storing them in the Data Warehouse
+on-run-end: "{{ dbt_project_evaluator.print_dbt_project_evaluator_issues() }}"
