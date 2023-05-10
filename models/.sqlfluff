@@ -1,5 +1,5 @@
 [sqlfluff]
-templater = jinja
+templater = dbt
 sql_file_exts = .sql,.sql.j2,.dml,.ddl
 
 [sqlfluff:indentation]
