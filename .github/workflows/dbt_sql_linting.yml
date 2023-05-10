@@ -23,16 +23,15 @@ jobs:
           - name: Check out the repo hosting the dbt project
             uses: actions/checkout@main
           - name: Get and Use sqlfluff docker image to lint dbt project
-
             uses: addnab/docker-run-action@v3
             with:
                 image: sqlfluff/sqlfluff:1.4.2
                 options: -v ${{ github.workspace }}:/work -e ABC=123
                 shell: bash
                 run: |
+                  pip install dbt-snowflake sqlfluff-templater-dbt
                   cd /work/models
                   sqlfluff --version
-                  pip install dbt-snowflake sqlfluff-templater-dbt
                   pip list
                   ls -ltr
                   sqlfluff lint --dialect snowflake .
