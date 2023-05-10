@@ -15,7 +15,7 @@ jobs:
         - name: Upgrading pip
           run:  pip install --upgrade pip
         - name: Install Python package using pip
-          run: pip install sqlfluff-templater-dbt 
+          run: pip install dbt-snowflake sqlfluff-templater-dbt
     compile:
         name: Build and Compile dbt Project
         runs-on: ubuntu-latest
