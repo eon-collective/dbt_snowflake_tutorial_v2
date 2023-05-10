@@ -8,6 +8,14 @@ env:
   DBT_PROJECT_NAME: dbt_snowflake_tutorial_v2
   
 jobs:
+    install_dependencies: 
+      name: installing sqlfluff-templater-dbt
+      runs-on: ubuntu-latest
+      steps:
+        - name: Upgrading pip
+          run:  python.exe -m pip install --upgrade pip
+        - name: Install Python package using pip
+          run: pip install sqlfluff-templater-dbt 
     compile:
         name: Build and Compile dbt Project
         runs-on: ubuntu-latest
@@ -22,7 +30,6 @@ jobs:
                 shell: bash
                 run: |
                   cd /work/models
-                  pip install sqlfluff-templater-dbt 
                   sqlfluff --version
                   ls -ltr
                   sqlfluff lint --dialect snowflake .
