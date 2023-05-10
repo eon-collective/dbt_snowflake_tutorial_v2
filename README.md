@@ -72,36 +72,35 @@
 
 |**Version** | **Revision Date** |
 |  :-------: | :-------------: |
-| v1.0       | May 20, 2022    |
+|  1.0       | May 06, 2023    |
 
 ## dbt Project Version <a name="dbt_project_version_info"></a> [↑](#toc-)
 
 |**Version** | **Latest Version used for testing** | 
 | :--------: | :---------------------------------: | 
-| 1.0.0      |   1.0.3                             | 
+| 1.5        | 1.5                                 | 
 
 
 # Overview <a name="dbt_project_overview"></a> [↑](#toc-)
 
 This project makes use of dbt, a data transformation tool, to derive insights from data stored in Snowflake.
 
+It demonstrates a simple implementation of a dbt ELT job.
+
 ## Objective
 
-To provide an organizational standard for transforming and analyzing data in a data warehouse using dbt.
-
-![Scheme](etc/images/UMM_Objective.png)
+To establish an organizational standard for transforming and analyzing data stored in a data warehouse using the data build tool (dbt).
 
 [↑](#toc-)
 # Application Functional Overview <a name="dbt_project_components"></a> 
 
-TODO: Add dbt project Documentation - The high level overview of application overview.
-*you can put functional architecture diagram here: where is the data coming from? what does your application do at, any downstream applications etc*
+The high level overview of application overview.
 
 ```mermaid
 graph LR
-A[source_A] -- ELT --> W{this dbt project}
-B[source_B] -- ELT --> W
-C[source_C] -- ELT --> W
+A[orders] -- ELT --> W{this dbt project}
+B[customers] -- ELT --> W
+C[payments] -- ELT --> W
 W -- dbt build: on_error --> X(notifications sent)
 X -- via --> V>email]
 X -- via --> U>slack]
@@ -114,9 +113,9 @@ O -- generates --> S
 S -- stored in --> R>catalog.json]
 Y -- consumed by --> T>application]
 Y -- consumed by --> Z>dashboard]
-
-
 ```
+
+
 [↑](#toc-)
 ## Project Input <a name="dbt_project_input"></a> 
 
@@ -137,65 +136,77 @@ The following raw tables are consumed by this project
 The following static tables are used by this project. Non-seed files are located in the 
 's3://bose-bucket/*' folder. They get `COPY INTO` the appropriate tables using a storage integration.
 
-|                **FILE_NAME**                |    **SCHEMA**     |               **TABLE_NAME**               | **TARGET STRUCTURE NOTES** |
-|:-------------------------------------------:|:-----------------:|:------------------------------------------:|:--------------------------:|
-|                    SEED                     |    MCA_TABLE_!    |             DIM_SOURCE_SYSTEM              |  Loaded with `dbt seed` command run - loads static csv file found in the `data` folder of the project into snowflake table                          |
-
-
+| **FILENAME** | **DATABASE** | **SCHEMA**   | **SEED**                         | **NOTES** |
+|:------------:|:------------:|:------------:|:--------------------------------:|:---------:|
+|              | RAW          | DBT_JANEROSE | DBT_PROJECT_EVALUATOR_EXCEPTIONS |           |
 
 [↑](#toc-)
 ## Cleansing/Transformation <a name="dbt_project_cleansing_and_transformation"></a>
 
-| **DATABASE** | **SCHEMA**   | **MODEL**                | **MATERIALIZATION** | **TAGS** | **NOTES** |
-|:------------:|:------------:|:------------------------:|:-------------------:|:--------:|:---------:|
-| RAW          | DBT_JANEROSE | CUSTOMER_ORDERS          | VIEW                | []       |           |
-| RAW          | DBT_JANEROSE | DIM_CUSTOMERS            | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | FCT_ORDERS               | EPHEMERAL           | []       |           |
-| RAW          | DBT_JANEROSE | INT_ORDERS_PIVOTED       | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | INT_ORDER_STATUS_PIVOTED | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | STR_PIVOTED_CUSTOMERS    | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | ALL_DATES                | TABLE               | []       |           |
-| RAW          | DBT_JANEROSE | STG_CUSTOMERS            | VIEW                | []       |           |
-| RAW          | DBT_JANEROSE | STG_JAFFLE_SHOP_ORDERS   | VIEW                | []       |           |
-| RAW          | DBT_JANEROSE | STG_ORDERS               | VIEW                | []       |           |
-| RAW          | DBT_JANEROSE | STG_PAYMENTS             | VIEW                | []       |           |
-
 This project handles the following transformations/cleansing or curation details during its execution.
 
-| **SOURCE SCHEMA** | **SOURCE TABLE_NAME** |    **SCHEMA**     |    **TABLE_NAME**     | **TRANSFORMATION/CLEANSING/CURATION NOTES** |
-|:-----------------:|-----------------------|:-----------------:|:---------------------:|:-------------------------------------------:|
-|       BODS        | VW_DRM_PRODUCT        |     UMM_EMEA      |  DRM_PRODUCT_CURRENT  |    Shift certain "level" columns up by 1    |
-|                   |                       | UMM_EMEA_REF_DATA | VW_DRM_ENTITY_CURRENT | Uses SEED file instead of using source data |
+## Project output
 
-[↑](#toc-)
-## Project Output <a name="dbt_project_output"></a>
+| **DATABASE** | **SCHEMA**   | **MODEL**                    | **MATERIALIZATION** | **TAGS** | **NOTES** |
+|:------------:|:------------:|:----------------------------:|:-------------------:|:--------:|:---------:|
+| RAW          | DBT_JANEROSE | FCT_DBT__MODEL_INFORMATION   | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | FCT_DBT__TEST_EXECUTIONS     | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | FCT_DBT__SNAPSHOT_EXECUTIONS | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__TESTS               | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__SNAPSHOTS           | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | FCT_DBT__SEED_EXECUTIONS     | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | FCT_DBT__MODEL_EXECUTIONS    | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__CURRENT_MODELS      | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__EXPOSURES           | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__MODELS              | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__SOURCES             | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | DIM_DBT__SEEDS               | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | FCT_DBT__INVOCATIONS         | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | MODEL_INFORMATION            | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | SNAPSHOT_EXECUTIONS          | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | TEST_EXECUTIONS              | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | EXPOSURES                    | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | MODELS                       | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | SEEDS                        | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | SOURCES                      | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | TESTS                        | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | SNAPSHOTS                    | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | SEED_EXECUTIONS              | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | MODEL_EXECUTIONS             | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | INVOCATIONS                  | INCREMENTAL         | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__INVOCATIONS         | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__MODEL_EXECUTIONS    | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__SEED_EXECUTIONS     | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__SNAPSHOTS           | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__TESTS               | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__EXPOSURES           | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__MODEL_INFORMATION   | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__SNAPSHOT_EXECUTIONS | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__TEST_EXECUTIONS     | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__SEEDS               | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__MODELS              | VIEW                | []       |           |
+| RAW          | DBT_JANEROSE | STG_DBT__SOURCES             | VIEW                | []       |           |
 
-This project produces the following tables in snowflake
-
-|    **SCHEMA**     |              **TABLE_NAME**               |             **TARGET STRUCTURE NOTES**             |
-|:-----------------:|:-----------------------------------------:|:--------------------------------------------------:|
-| UMM_EMEA_REF_DATA |                   DATES                   |                                                    |
 
 [↑](#toc-)
 ## Data Lineage <a name="dbt_project_data_lineage"></a>
 
-The full data lineage image isn't reader friendly when outputted to an image as it is too long and too wide. To generate and serve the docs on your machine
-see [dbt Commands: How to Run](#dbt_project_howtorun). *Note: In dbt data lineage diagrams green bubbles are sources and blue bubbles are models.*
+The full data lineage image isn't reader friendly when outputted to an image as it is too long and too wide.
+
+To generate and serve the docs on your machine see [dbt Commands: How to Run](#dbt_project_howtorun).
+
+*Note: In dbt data lineage diagrams green bubbles are sources and blue bubbles are models.*
 
 [↑](#toc-) 
 ### Sample Data Lineages
-TODO: Replace with lineages
 
-**UMM_EMEA_STAGE Data Lineage**
+Lineage graph for jaffle shop
+![Lineage graph for jaffle shop](etc/images/jaffle_shop_lineage.png)
 
-![Scheme](etc/images/umm_emea_stage_lineage.png "UMM_EMEA_STAGE Data Lineage")
-
-**UMM_EMEA_DW Data Lineage**
-
-![Scheme](etc/images/umm_emea_dw_lineage.png "UMM_EMEA_DW Data Lineage")
+Lineage graph for Stripe payments
+![Lineage graph for Stripe payments](etc/images/stripe_payment_lineage.png)
 
 ## Functional Context <a name="dbt_project_functional_context"></a> [↑](#toc-)
-
 
 # Using This dbt Project <a name="dbt_project_using_this_one"></a> [↑](#toc-)
 
@@ -204,38 +215,51 @@ TODO: Replace with lineages
 The project structure defined for dbt projects is as defined below:
 
 ```commandline
-.
-├── README.md
-├── analyses
-├── dbt_project.yml
-├── macros
-│   ├── enterprise_macros.sql
-│   ├── generate_hyp_entity.sql
-│   ├── generate_mr_type.sql
-│   ├── generate_mre_key.sql
-│   └── generate_schema.sql
-├── models
-│   ├── 1_stage
-│   │   └── sap
-│   │       ├── _src_sap.yml
-│   │       └── finance
-│   │           └── _config.yml
-│   ├── 2_intermediate
-│   │   └── finance
-│   │       └── _config.yml
-│   ├── 3_marts
-│   │   └── finance
-│   │       └── _config.yml
-│   └── 4_consumption
-│       ├── dashboards
-│       │   └── _config.yml
-│       └── data_science
-│           └── _config.yml
-├── packages.yml
-├── scratchpad
-├── seeds
-├── snapshots
-└── tests
+dbt_snowflake_tutorial_v2
+ ┣ analyses
+ ┃ ┣ interactive_ad_hoc_testing.sql
+ ┃ ┣ orders_by_day.sql
+ ┃ ┗ total_revenues.sql
+ ┣ etc
+ ┃ ┗ images
+ ┃ ┃ ┣ jaffle_shop_lineage.png
+ ┃ ┃ ┗ stripe_payment_lineage.png
+ ┃ ┗ project_tree_structure.md
+ ┣ logs
+ ┃ ┗ dbt.log
+ ┣ macros
+ ┃ ┣ cents_to_dollars.sql
+ ┃ ┣ clean_stale_models.sql
+ ┃ ┣ grant_select.sql
+ ┃ ┣ limit_data_dev.sql
+ ┃ ┗ union_tables_by_prefix.sql
+ ┣ models
+ ┃ ┣ marts
+ ┃ ┃ ┗ core
+ ┃ ┃ ┃ ┣ dim_customers.sql
+ ┃ ┃ ┃ ┣ fct_orders.sql
+ ┃ ┃ ┃ ┣ int_orders_pivoted.sql
+ ┃ ┃ ┃ ┣ int_order_status_pivoted.sql
+ ┃ ┃ ┃ ┗ str_pivoted_customers.sql
+ ┃ ┣ staging
+ ┃ ┃ ┣ jaffle_shop
+ ┃ ┃ ┃ ┣ jaffle_shop.md
+ ┃ ┃ ┃ ┣ sources.yml
+ ┃ ┃ ┃ ┣ src_jaffle_shop.yml
+ ┃ ┃ ┃ ┣ stg_customers.sql
+ ┃ ┃ ┃ ┣ stg_jaffle_shop.yml
+ ┃ ┃ ┃ ┣ stg_jaffle_shop_orders.sql
+ ┃ ┃ ┃ ┗ stg_orders.sql
+ ┃ ┃ ┣ stripe
+ ┃ ┃ ┃ ┣ sources.yml
+ ┃ ┃ ┃ ┣ src_stripe.yml
+ ┃ ┃ ┃ ┣ stg_payments.sql
+ ┃ ┃ ┃ ┣ stg_stripe.yml
+ ┃ ┃ ┃ ┗ stripe.md
+ ┃ ┃ ┗ all_dates.sql
+ ┃ ┗ .sqlfluff
+ ┗ tests
+   ┗ assert_positive_total_for_payments.sql
 ```
 This same project tree view above is persisted/versioned under *etc/project_tree_structure.md* - If project changes, please update both markdown documents.
 
@@ -271,10 +295,14 @@ This application uses the following variables defined in the `dbt_project.yml` f
 
 ## Project Packages/Dependencies <a name="dbt_project_packages_dependencies"></a> [↑](#toc-)
 
-| Package    | Version | Usage                                       |
-|------------|---------|---------------------------------------------|
-| dbt_utils  | 0.8.0   | Used for reusable macros and utils from dbt |
-
+| Package               | Version | Usage                                       |
+|-----------------------|---------|---------------------------------------------|
+| codegen               | 0.9.0   | Macros that generate dbt code, and log it to the command line. |
+| audit_helper          | 0.7.0   | Useful macros when performing data audits   |
+| dbt_meta_testing      | 0.3.6   | Contains macros to assert test and documentation coverage from dbt_project.yml configuration settings. |
+| dbt_readme_helper     | 0.1.1   | Logs information about source, seed, & model nodes to the command line in pipe-delimited csv format. |
+| dbt_artifacts_eon     | 0.2.0   | Builds a mart of tables and views describing the dbt project |
+| dbt_project_evaluator | 0.5.0   | Highlights areas of a dbt project that are misaligned with dbt Labs' best practices. |
 
 
 ## Development Environment Setup <a name="dbt_project_development_environnment"></a> [↑](#toc-)
@@ -295,7 +323,9 @@ Below are instructions to get setup on both of these environments.
 
 2. #### Setup<a name="dbt_project_input_local_development"></a> [↑](#toc-)
 
-    Set up a profile called `dbt_project_template` to connect to a data warehouse by following [these instructions](https://docs.getdbt.com/docs/configure-your-profile). If you have access to a data warehouse, you can use those credentials â€“ we recommend setting your [target schema](https://docs.getdbt.com/docs/configure-your-profile#section-populating-your-profile) to be a new schema (dbt will create the schema for you, as long as you have the right privileges). If you don't have access to an existing data warehouse, you can also setup a local postgres database and connect to it in your profile.
+    Set up a profile called `dbt_project_template` to connect to a data warehouse by following [these instructions](https://docs.getdbt.com/docs/configure-your-profile). If you have access to a data warehouse, you can use those credentials. 
+    
+    We recommend setting your [target schema](https://docs.getdbt.com/docs/configure-your-profile#section-populating-your-profile) to be a new schema (dbt will create the schema for you, as long as you have the right privileges). If you don't have access to an existing data warehouse, you can also setup a local postgres database and connect to it in your profile.
     Open your terminal and navigate to your `profiles.yml`. This is in the `.dbt` hidden folder on your computer, located in your home directory.
 
     On macOS, you can open the file from your terminal similar to this (which is using the Atom text editor to open the file):
@@ -344,52 +374,54 @@ Below are instructions to get setup on both of these environments.
 3. Clone this repository
     
     ```console
-    $ git clone git@bitbucket.org:<organization>/dbt_project_template.git 
+    $ git@github.com:eon-collective/dbt_snowflake_tutorial_v2.git
     ```
 
-4. Change into the `dbt_project_template` directory from the command line:
+4. Change into the `dbt_snowflake_tutorial_v2` directory from the command line:
     ```console
-    $ cd dbt_project_template
+    $ cd dbt_snowflake_tutorial_v2
     ```
 
 5. Try running the following generic/common commands one at a time from your command line:
     - `dbt debug` - tests your connection. If this fails, check your profiles.yml.
     - `dbt deps`  - installs any packages defined in the packages.yml file.  
-    For project specific commands see the section below on [dbt Commands: How to Run](#dbt_project_howtorun)
-
+    
+    For project specific commands see the section below
+    [dbt Commands: How to Run](#dbt_project_howtorun)
 
 ### Developing in the Cloud IDE <a name="dbt_project_input_cloud_ide_development"></a> [↑](#toc-)
 
 The easiest way to contribute to this project is by developing in dbt Cloud. If you have access, navigate to the develop tab in the menu and fill out any required information to get connected.
 
-In the command line bar at the bottom of the interface, run the following generic/common commands one at a time:
+In the command line bar at the bottom of the interface, run the following generic/common command:
 
 - `dbt deps`  - installs any packages defined in the packages.yml file.
 
-For project specific commands see the section below on [dbt Commands: How to Run](#dbt_project_howtorun)
+For project specific commands see the section below:
+[dbt Commands: How to Run](#dbt_project_howtorun)
 
 # dbt Commands: How to Run <a name="dbt_project_howtorun"></a> [↑](#toc-)
 Assuming you have your environment setup as described in previous section, you can run the following commands to manage this dbt project during deployment.
 
-### To get dependencies:  <a name="dbt_howtorun_deps"></a> [↑](#toc-)
+### To install dependencies:  <a name="dbt_howtorun_deps"></a> [↑](#toc-)
 
-[dbt docs on deps command](https://docs.getdbt.com/reference/commands/deps)
+See [dbt docs on deps command](https://docs.getdbt.com/reference/commands/deps)
 
     dbt deps
 
 ### To compile the dbt project  <a name="dbt_howtorun_compile"></a> [↑](#toc-)
-Generates executable SQL from source model, test, and analysis files. You can find these compiled SQL files in the target/ directory of your dbt project in your development environment. [See dbt docs on compile](https://docs.getdbt.com/reference/commands/compile)
+Generates executable SQL from source model, test, and analysis files. You can find these compiled SQL files in the target/ directory of your dbt project in your development environment. See [dbt docs on compile](https://docs.getdbt.com/reference/commands/compile)
 
     dbt compile
 
 ### To get the documentation:  <a name="dbt_howtorun_docsgenerate"></a> [↑](#toc-)
-Generate documentation for the project. [See dbt docs on docs generate](https://docs.getdbt.com/reference/commands/cmd-docs#dbt-docs-generate)
+Generate documentation for the project. See [dbt docs on docs generate](https://docs.getdbt.com/reference/commands/cmd-docs#dbt-docs-generate)
 
     dbt docs generate --no-compile
 
 NOTE: since this project uses call statements in some of the dbt model that execute directly in the DW (snowflake), if dbt runs any compile step which includes `dbt docs generate`, existing data in the mart is lost since the call statements execute with `delete from {{this}} <where condition>`
 
-To view the generated in local IDE, run the following command to start a webserver on default port 8000 and serve the generated documents. [See dbt docs on docs serve](https://docs.getdbt.com/reference/commands/cmd-docs#dbt-docs-serve)
+To view the generated in local IDE, run the following command to start a webserver on default port 8000 and serve the generated documents. See [dbt docs on docs serve](https://docs.getdbt.com/reference/commands/cmd-docs#dbt-docs-serve)
 
     dbt docs serve
 
@@ -398,7 +430,7 @@ Builds any .csv files as tables in the warehouse. These are located in the data/
 
     dbt seed
 
-[dbt docs on seed](https://docs.getdbt.com/docs/building-a-dbt-project/seeds)
+See [dbt docs on seed](https://docs.getdbt.com/docs/building-a-dbt-project/seeds)
 
 ### Mart build <a name="dbt_howtorun_martbuild"></a> [↑](#toc-)
 
@@ -442,9 +474,7 @@ becomes irrelevant because DBT uses the `CREATE OR REPLACE` command.
 ##	Introduction [↑](#toc-)
 Mart Auditor is a dbt package developed to capture runtime information about marts being executed in Bose COE data loads. These runtime metrics can be used to analyze data marts executed in past and for auditing purpose.
 ##	Design
-Any data mart that is developed in Bose COE project can plug in Mart Auditor package to capture data mart run time metrics. Mart Auditor creates two different tables i.e., Batch and Batch_Loging for all marts in database. These tables can be used to query to know past executions, errors, execution re tryâ€™s etc. 
-
-![Scheme](etc/images/mart_audit_model.png)
+Any data mart that is developed in Bose COE project can plug in Mart Auditor package to capture data mart run time metrics. Mart Auditor creates two different tables i.e., Batch and Batch_Loging for all marts in database. These tables can be used to query to know past executions, errors, execution retries etc. 
 
 Mart Auditor is a light weight dbt package that inserts records into above tables as mart progresses and creates table or views as part of model creating and execution. There is only one entry per execution of Mart in Batch table and multiple entries one per model in batch_logging table. Association between batch and batch_logging table is: 1 -> M
 
@@ -505,7 +535,6 @@ Once all the models in data mart are executed successfully then this macro updat
 *Note*: Mart Auditor is available in bitbucket at following location: 
 
 Bitbucket Location: 
-> ``
 
 1.	Add Mart Auditor package in packages.yml file like below example:
 
@@ -531,8 +560,6 @@ Bitbucket Location:
 Dataops Queries for this auditing this mart run are provided in the `analysis` folder with the file name `mart_auditor_dataops.sql`
 
 # Testing <a name="dbt_project_testing"></a> [↑](#toc-)
-
-*documentation placeholder - call out any tests being run in the project* 
 
 [dbt docs on testing](https://docs.getdbt.com/docs/building-a-dbt-project/tests)
 
@@ -707,25 +734,30 @@ This project utilizes the following SLA schedule.
 | 3 - Medium         | N/A                      | 5 Business Days            | In Region     |
 | 4 - Low            | N/A                      | 10 Business Days           | In Region     |
 
-# Troubleshoot/ F.A.Q <a name="dbt_troubleshoot"></a> [↑](#toc-)
+# Troubleshoot/FAQ <a name="dbt_troubleshoot"></a> [↑](#toc-)
 
-*documentation placeholder*
+[dbt FAQs](https://docs.getdbt.com/docs/faqs)
 
 ## Known Issues <a name="dbt_troubleshoot_known_issues"></a> [↑](#toc-)
 
-1. Existing data is lost or deleted after running `dbt docs generate` without the `--no-compile` flag.
+Existing data is lost or deleted after running `dbt docs generate` without the `--no-compile` flag.
    This is a known issue, since the project uses call statements that execute on the DW directly, if dbt internally executes a `compile` step, the call statements are executed. To avoid this behavior, use the `--no-compile` flag with the dbt docs generate command. See documentation on [dbt-docs-generate with --no-compile flag](https://docs.getdbt.com/reference/commands/cmd-docs#dbt-docs-generate) and [dbt execute](https://docs.getdbt.com/reference/dbt-jinja-functions/execute)
+   
    If existing data is lost, please rerun the data mart build using the **FULLREFRESH** plan and tasks.
 
 ## Debugging <a name="dbt_troubleshoot_debugging"></a> [↑](#toc-)
-1. [See dbt docs on Debugging errors](https://docs.getdbt.com/docs/guides/debugging-errors#general-process-of-debugging) - this has a comprehensive list and categorization of common errors seen on a typical dbt project. Note the [common pitfalls section](https://docs.getdbt.com/docs/guides/debugging-errors#common-pitfalls) also
+[See dbt docs on Debugging errors](https://docs.getdbt.com/docs/guides/debugging-errors#general-process-of-debugging) - this has a comprehensive list and categorization of common errors seen on a typical dbt project. Note the [common pitfalls section](https://docs.getdbt.com/docs/guides/debugging-errors#common-pitfalls) also
 
 
 # Additional Notes <a name="dbt_project_migration_notes"></a> [↑](#toc-)
 
-During the development of this project ......
+> This project builds on the tutorial which is located in [dbt fundamentals course](https://courses.getdbt.com/collections/courses)
 
-> Include any additional notes here for your project
+> The raw data was sourced from `s3://dbt-tutorial-public` and loaded into Snowflake. The raw data is stored as CSV files in a public S3 bucket.
+
+> The transformed data is stored in the RAW database. For best practices, the transformed data should be stored in a separate database in the data warehouse.
+
+> Rules were defined in a .sqlfluff file which can be found in the models directory. These rules enforce a consistent code style in all models.
 
 # Resources <a name="resources"></a> [↑](#toc-)
 
@@ -737,6 +769,6 @@ During the development of this project ......
 - Check out [dbt Developer blog on git cherry pick](https://docs.getdbt.com/blog/the-case-against-git-cherry-picking)
 
 # Cutover Plan <a name="cutover_plan"></a> [↑](#toc-)
-Please review the curover plan as templated in `../etc/CUTOVER_PLAN.md`
+TODO: `../etc/CUTOVER_PLAN.md`
 
 [Back to top ↑](#toc-)
