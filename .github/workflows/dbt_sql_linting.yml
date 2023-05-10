@@ -8,18 +8,22 @@ env:
   DBT_PROJECT_NAME: dbt_snowflake_tutorial_v2
   
 jobs:
-    install_dependencies: 
-      name: installing sqlfluff-templater-dbt
-      runs-on: ubuntu-latest
-      steps:
-        - name: Upgrading pip
-          run:  pip install --upgrade pip
-        - name: Install Python package using pip
-          run: pip install dbt-snowflake sqlfluff-templater-dbt
+    # install_dependencies: 
+    #   name: installing sqlfluff-templater-dbt
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #     - name: Upgrading pip
+    #       run:  pip install --upgrade pip
+    #     - name: Install Python package using pip
+    #       run: pip install dbt-snowflake sqlfluff-templater-dbt
     compile:
         name: Build and Compile dbt Project
         runs-on: ubuntu-latest
         steps:
+          - name: Upgrading pip
+            run:  pip install --upgrade pip
+          - name: Install Python package using pip
+            run: pip install dbt-snowflake sqlfluff-templater-dbt
           - name: Check out the repo hosting the dbt project
             uses: actions/checkout@main
           - name: Get and Use sqlfluff docker image to lint dbt project
