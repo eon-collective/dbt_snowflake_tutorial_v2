@@ -19,7 +19,6 @@ jobs:
             with:
                 image: sqlfluff/sqlfluff:1.4.2
                 options: -v ${{ github.workspace }}:/work -e ABC=123
-                shell: bash
                 run: |
                   sudo -H pip install dbt-snowflake sqlfluff-templater-dbt
                   pip list
