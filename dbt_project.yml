@@ -8,7 +8,6 @@ config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
 profile: 'snowflake-dwh'
-# profile: 'default'
 
 # These configurations specify where dbt should look for different types of files.
 # The `source-paths` config, for example, states that models in this project can be
@@ -26,7 +25,7 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "dbt_packages"
 
 vars:
-  refresh_type: MONTHLY
+  refresh_type: 'MONTHLY'
   env:
       'TEST'
 
@@ -43,7 +42,7 @@ models:
       +materialized: table
   
 tests:
-  +severity: error  # all tests
+  +severity: error  # all tests produce an error
 
 
   #  specifying where the raw (sources) data is uploaded and where the dbt models are created
