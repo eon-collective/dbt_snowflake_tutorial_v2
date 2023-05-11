@@ -1,15 +1,9 @@
 <img src="https://static.wixstatic.com/media/95af51_ae2122aebc944721a96afd10f3ccfe0c~mv2.png/v1/fill/w_329,h_45,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/95af51_ae2122aebc944721a96afd10f3ccfe0c~mv2.png" alt="drawing" width="600"/><a name="top-">
 
 
-<div style="text-align:center;display:inline-flex;">
-
 [![Run SQL Linting for dbt projects](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_sql_linting.yml/badge.svg)](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_sql_linting.yml)
-
 [![Run CI pipe for dbt projects](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe.yml/badge.svg)](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe.yml) 
-
 [![Run CI pipe evaluator for dbt projects](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe_evaluator.yml/badge.svg)](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe_evaluator.yml)
-
-</div>
 
 # Welcome to Eon Collective dbt® Practices
 
