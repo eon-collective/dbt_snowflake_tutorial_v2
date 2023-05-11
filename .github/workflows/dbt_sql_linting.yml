@@ -25,6 +25,5 @@ jobs:
           - name: linting sql model files
             run: |
                 sqlfluff --version
-                pip list
                 ls -ltr
-                sqlfluff lint --dialect snowflake .
+                sqlfluff lint --dialect snowflake models/
