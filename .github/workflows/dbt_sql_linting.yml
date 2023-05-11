@@ -15,7 +15,7 @@ jobs:
           - name: Check out the repo hosting the dbt project
             uses: actions/checkout@main
           - name: Install sqlfluff-templater-dbt package
-            uses: pip install dbt-snowflake sqlfluff-templater-dbt
+            run: pip install dbt-snowflake sqlfluff-templater-dbt
           - name: confirm package installation
             run: pip list
           - name: Get and Use sqlfluff docker image to lint dbt project
