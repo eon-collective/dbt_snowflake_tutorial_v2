@@ -5,7 +5,5 @@ logs/
 
 commands.txt
 
-profiles.yml
-
 # Python virtual environment
 eon_training/
