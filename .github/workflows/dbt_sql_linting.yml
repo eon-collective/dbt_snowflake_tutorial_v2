@@ -21,7 +21,7 @@ jobs:
                 options: -v ${{ github.workspace }}:/work -e ABC=123
                 shell: bash
                 run: |
-                  RUN pip install dbt-snowflake sqlfluff-templater-dbt
+                  sudo -H pip install dbt-snowflake sqlfluff-templater-dbt
                   pip list
                   cd /work/models
                   sqlfluff --version
