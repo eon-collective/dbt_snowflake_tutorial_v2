@@ -27,3 +27,4 @@ jobs:
                 pwd
                 sqlfluff --version
                 ls -ltr
+                sqlfluff lint --dialect snowflake .
