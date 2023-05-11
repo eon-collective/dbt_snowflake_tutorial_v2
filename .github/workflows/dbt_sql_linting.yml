@@ -1,4 +1,4 @@
-name: Run sqlfluff pipe to lint model files in dbt projects
+name: Sqlfluff CI pipe to lint models in dbt projects
 on:
   push:
     branches: [ "feature/*" ]
@@ -8,20 +8,16 @@ env:
   DBT_PROJECT_NAME: dbt_snowflake_tutorial_v2
   
 jobs:
-    # install_dependencies: 
-    #   name: installing sqlfluff-templater-dbt
-    #   runs-on: ubuntu-latest
-    #   steps:
-    #     - name: Upgrading pip
-    #       run:  pip install --upgrade pip
-    #     - name: Install Python package using pip
-    #       run: pip install dbt-snowflake sqlfluff-templater-dbt
     compile:
         name: Build and Compile dbt Project
         runs-on: ubuntu-latest
         steps:
           - name: Check out the repo hosting the dbt project
             uses: actions/checkout@main
+          - name: Install sqlfluff-templater-dbt package
+            uses: pip install dbt-snowflake sqlfluff-templater-dbt
+          - name: confirm package installation
+            run: pip list
           - name: Get and Use sqlfluff docker image to lint dbt project
             uses: addnab/docker-run-action@v3
             with:
@@ -29,9 +25,8 @@ jobs:
                 options: -v ${{ github.workspace }}:/work -e ABC=123
                 shell: bash
                 run: |
-                  pip install dbt-snowflake sqlfluff-templater-dbt
                   cd /work/models
                   sqlfluff --version
                   pip list
                   ls -ltr
-                  sqlfluff lint --dialect snowflake .
+                  sqlfluff lint
