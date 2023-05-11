@@ -19,7 +19,7 @@ jobs:
             with:
                 python-version: '3.10'
           - name: install sqlfluff python package
-            run: pip install sqlfluff
+            run: pip install sqlfluff 
           - name: install sqlfluff templater for dbt
             run: pip install dbt-snowflake sqlfluff-templater-dbt
           - name: linting sql model files
@@ -27,4 +27,4 @@ jobs:
                 sqlfluff --version
                 pip list
                 ls -ltr
-                sqlfluff lint .
+                sqlfluff lint --dialect snowflake .
