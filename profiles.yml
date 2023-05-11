@@ -7,7 +7,7 @@ snowflake-dwh:
 
       # User/password auth
       user: JANEROSE
-      password: P@55w0rd
+      password: ${DBT_DW_PASSWORD}
 
       role: ACCOUNTADMIN
       database: RAW
