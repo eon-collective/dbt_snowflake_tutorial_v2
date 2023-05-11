@@ -1,0 +1,8 @@
+target/
+dbt_packages/
+macros/
+analyses/
+etc/
+seeds/
+snapshots/
+tests/

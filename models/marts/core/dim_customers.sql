@@ -14,10 +14,10 @@ customer_orders AS (
         MAX(order_date) AS most_recent_order_date,
         COUNT(order_id) AS number_of_orders
     FROM orders
-    GROUP BY 1
+    GROUP BY customer_id
 ),
 
-final AS (
+final_cte AS (
     SELECT
         customers.customer_id,
         customers.first_name,
@@ -32,4 +32,4 @@ final AS (
 )
 
 SELECT *
-FROM final
+FROM final_cte

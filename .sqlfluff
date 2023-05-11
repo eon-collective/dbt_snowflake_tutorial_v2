@@ -68,5 +68,5 @@ extended_capitalisation_policy = upper
 [sqlfluff:rules:convention.quoted_literals]
 ; Consistent usage of double quotes for quoted literals
 preferred_quoted_literal_style = double_quotes
-; Enable for dialects that do not support single and double quotes for quoted literals (e.g. Postgres/Snowflake)
-force_enable = True
+; Disable for dialects that do not support double quotes for quoted literals (e.g. Postgres/Snowflake)
+force_enable = False

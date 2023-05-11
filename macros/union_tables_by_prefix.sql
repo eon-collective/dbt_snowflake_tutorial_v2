@@ -15,9 +15,8 @@
         {%- if not loop.first -%}
             union all
         {%- endif %}
-select *
-from {{ table.database }}.{{ table.schema }}.{{ table.name }}
+SELECT *
+FROM {{ table.database }}.{{ table.schema }}.{{ table.name }}
 
     {% endfor -%}
 {%- endmacro -%}
-

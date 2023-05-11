@@ -25,7 +25,7 @@ pivoted_orders AS (
         {% endfor %}
 
     FROM order_status
-    GROUP BY 1
+    GROUP BY order_id
 )
 
 SELECT *
