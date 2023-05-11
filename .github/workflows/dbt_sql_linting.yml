@@ -24,7 +24,9 @@ jobs:
             run: pip install dbt-snowflake sqlfluff-templater-dbt
           - name: linting sql model files
             run: |
-                cd models
                 sqlfluff --version
+                pwd
+                cd models
+                pwd
                 ls -ltr
                 sqlfluff lint --dialect snowflake .
