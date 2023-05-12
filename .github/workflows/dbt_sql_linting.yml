@@ -39,6 +39,12 @@ jobs:
                 MY_STRING="${MY_STRING//$'\r'/'%0D'}"
                 echo "{content}={$MY_STRING}" >> $GITHUB_OUTPUT
             id: my_string
+          - name: create profiles.yml file
+            run: |
+                  mkdir ~/.dbt
+                  touch /root/.dbt/profiles.yml
+                  echo -e "${{ steps.my_string.outputs.content }}" >> /root/.dbt/profiles.yml
+                  cd /work
           - name: Set up Python virtual environment
             uses: actions/setup-python@v4
             with:
@@ -47,12 +53,6 @@ jobs:
             run: pip install sqlfluff 
           - name: install sqlfluff templater for dbt
             run: pip install dbt-snowflake sqlfluff-templater-dbt
-          - name: create profiles.yml file
-            run: |
-                mkdir ~/.dbt
-                touch /root/.dbt/profiles.yml
-                echo -e "${{ steps.my_string.outputs.content }}" >> /root/.dbt/profiles.yml
-                cd /work
           - name: linting sql model files
             run: |
                 sqlfluff --version
