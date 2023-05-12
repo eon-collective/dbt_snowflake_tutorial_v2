@@ -51,21 +51,16 @@ jobs:
           - name: display string
             run: |
               echo "The string is: ${{ steps.my_string.outputs.content }}"
-          - name: Get and Use dbt docker image to access dbt project
-            uses: addnab/docker-run-action@v3
-            with:
-                image: ghcr.io/dbt-labs/dbt-snowflake:latest
-                options: -v ${{ github.workspace }}:/work -e PROJECT_NAME=dbt_practices
-                shell: bash
-                run: |
-                  mkdir ~/.dbt
-                  touch /root/.dbt/profiles.yml
-                  echo "Before"
-                  cat /root/.dbt/profiles.yml
-                  echo -e "${{ steps.my_string.outputs.content }}" >> /root/.dbt/profiles.yml
-                  echo "After"
-                  cat /root/.dbt/profiles.yml
-                  cd /work
-                  ls -ltr /work
-                  dbt deps
-                  dbt build --select package:dbt_project_evaluator
+          - name: Create .dbt directory and profiles.yml
+            run: |
+              mkdir ~/.dbt
+              touch /root/.dbt/profiles.yml
+              cat /root/.dbt/profiles.yml
+              echo -e "${{ steps.my_string.outputs.content }}" >> /root/.dbt/profiles.yml
+              cat /root/.dbt/profiles.yml
+          - name: Install dependencies
+            run: |
+                pip install dbt-snowflake
+                dbt deps
+          - name: Build dbt project using project evaluator package                
+            run: dbt build --select package:dbt_project_evaluator
