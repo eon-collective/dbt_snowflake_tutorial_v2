@@ -59,6 +59,7 @@ jobs:
                 options: -v ${{ github.workspace }}:/work -e ABC=123
                 shell: bash
                 run: |
+                  pwd
                   mkdir ~/.dbt
                   touch /root/.dbt/profiles.yml
                   echo -e "${{ steps.my_string.outputs.content }}" >> /root/.dbt/profiles.yml
