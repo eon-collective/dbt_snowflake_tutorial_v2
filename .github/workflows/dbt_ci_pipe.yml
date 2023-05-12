@@ -24,7 +24,7 @@ jobs:
         steps:
           - name: Check out the repo hosting the dbt project
             uses: actions/checkout@main
-          - name: create string
+          - name: create dbt connection details string
             run: |
               MY_STRING=$(cat << EOF
               ${{ env.DBT_PROJECT_NAME }}:
@@ -47,7 +47,7 @@ jobs:
               MY_STRING="${MY_STRING//'%'/'%25'}"
               MY_STRING="${MY_STRING//$'\n'/'%0A'}"
               MY_STRING="${MY_STRING//$'\r'/'%0D'}"
-              echo "::set-output name=content::$MY_STRING"
+              echo "{content}={$MY_STRING}" >> $GITHUB_OUTPUT
             id: my_string
           - name: display string
             run: |
