@@ -56,8 +56,8 @@ jobs:
                 options: -v ${{ github.workspace }}:/work -e ABC=123
                 shell: bash
                 run: |
-                  ENCODED_STRING = ${{ steps.my_string.outputs.content }}
-                  echo "The profile string is: ${ENCODED_STRING}"
+                  ENCODED_STRING: ${{ steps.my_string.outputs.content }}
+                  echo "The profile string is: {$ENCODED_STRING}"
                   mkdir ~/.dbt
                   touch /root/.dbt/profiles.yml
                   echo -e "${{ steps.my_string.outputs.content }}" >> /root/.dbt/profiles.yml
