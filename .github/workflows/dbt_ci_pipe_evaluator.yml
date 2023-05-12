@@ -53,11 +53,11 @@ jobs:
               echo "The string is: ${{ steps.my_string.outputs.content }}"
           - name: Create .dbt directory and profiles.yml
             run: |
-              mkdir ~/.dbt
-              touch /root/.dbt/profiles.yml
-              cat /root/.dbt/profiles.yml
-              echo -e "${{ steps.my_string.outputs.content }}" >> /root/.dbt/profiles.yml
-              cat /root/.dbt/profiles.yml
+              mkdir -p /home/runner/.dbt
+              touch /home/runner/.dbt/profiles.yml
+              cat /home/runner/.dbt/profiles.yml
+              echo -e "${{ steps.my_string.outputs.content }}" >>  /home/runner/.dbt/profiles.yml
+              cat /home/runner/.dbt/profiles.yml
           - name: Install dependencies
             run: |
                 pip install dbt-snowflake

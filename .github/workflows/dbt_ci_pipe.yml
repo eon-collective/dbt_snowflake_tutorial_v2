@@ -55,7 +55,7 @@ jobs:
           - name: Create .dbt directory and profiles.yml 
             run: |
                 mkdir -p /home/runner/.dbt
-                touch touch /home/runner/.dbt/profiles.yml
+                touch /home/runner/.dbt/profiles.yml
                 echo -e "${{ steps.my_string.outputs.content }}" >> /home/runner/.dbt/profiles.yml
           - name: Install dependencies
             run: |
