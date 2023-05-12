@@ -44,9 +44,6 @@ jobs:
                     warehouse: ${{ env.DBT_DW_VIRT_WH }}
               EOF
               )
-              MY_STRING="${MY_STRING//'%'/'%25'}"
-              MY_STRING="${MY_STRING//$'\n'/'%0A'}"
-              MY_STRING="${MY_STRING//$'\r'/'%0D'}"
               echo "content={$MY_STRING}" >> $GITHUB_OUTPUT
             id: my_string
           - name: display string
