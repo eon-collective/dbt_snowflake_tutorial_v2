@@ -5,17 +5,17 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  DBT_PROJECT_NAME: jaffle_shop
-  DBT_DW_ACCOUNT_URL: ${{ secrets.DBT_DW_ACCOUNT_URL }}
-  DBT_DW_USER: ${{ secrets.DBT_DW_USER }}
-  DBT_DW_PASSWORD: ${{ secrets.DBT_DW_PASSWORD }}
-  DBT_DW_ROLE: ${{ secrets.DBT_DW_ROLE }}
-  DBT_DW_DB: ${{ secrets.DBT_DW_DB }}
-  DBT_DW_SCHEMA: ${{ secrets.DBT_DW_SCHEMA }}
-  DBT_DW_VIRT_WH: ${{ secrets.DBT_DW_VIRT_WH }}
-  DBT_NUM_THREADS: 20
-  DBT_QUERY_TAG: dbt_ci_pipe
+# env:
+#   DBT_PROJECT_NAME: jaffle_shop
+#   DBT_DW_ACCOUNT_URL: ${{ secrets.DBT_DW_ACCOUNT_URL }}
+#   DBT_DW_USER: ${{ secrets.DBT_DW_USER }}
+#   DBT_DW_PASSWORD: ${{ secrets.DBT_DW_PASSWORD }}
+#   DBT_DW_ROLE: ${{ secrets.DBT_DW_ROLE }}
+#   DBT_DW_DB: ${{ secrets.DBT_DW_DB }}
+#   DBT_DW_SCHEMA: ${{ secrets.DBT_DW_SCHEMA }}
+#   DBT_DW_VIRT_WH: ${{ secrets.DBT_DW_VIRT_WH }}
+#   DBT_NUM_THREADS: 20
+#   DBT_QUERY_TAG: dbt_ci_pipe
   
 jobs:
     compile:
@@ -24,34 +24,31 @@ jobs:
         steps:
           - name: Check out the repo hosting the dbt project
             uses: actions/checkout@main
-          - name: create dbt connection details string
+          - name: set up dbt connection details
+            env:
+              DBT_PROJECT_NAME: jaffle_shop
+              DBT_DW_ACCOUNT_URL: ${{ secrets.DBT_DW_ACCOUNT_URL }}
+              DBT_DW_USER: ${{ secrets.DBT_DW_USER }}
+              DBT_DW_PASSWORD: ${{ secrets.DBT_DW_PASSWORD }}
+              DBT_DW_ROLE: ${{ secrets.DBT_DW_ROLE }}
+              DBT_DW_DB: ${{ secrets.DBT_DW_DB }}
+              DBT_DW_SCHEMA: ${{ secrets.DBT_DW_SCHEMA }}
+              DBT_DW_VIRT_WH: ${{ secrets.DBT_DW_VIRT_WH }}
+              DBT_NUM_THREADS: 20
+              DBT_QUERY_TAG: dbt_ci_pipe
             run: |
-              MY_STRING=$(cat << EOF
-              ${{ env.DBT_PROJECT_NAME }}:
-                target: dev
-                outputs:
-                  dev:
-                    type: snowflake
-                    account: ${{ env.DBT_DW_ACCOUNT_URL }} 
-                    client_session_keep_alive: true
-                    database: ${{ env.DBT_DW_DB }}
-                    password: ${{ env.DBT_DW_PASSWORD }}
-                    query_tag: ${{ env.DBT_QUERY_TAG }}
-                    role: ${{ env.DBT_DW_ROLE }}
-                    schema: ${{ env.DBT_DW_SCHEMA }}
-                    threads: ${{ env.DBT_NUM_THREADS }}
-                    user: ${{ env.DBT_DW_USER }}
-                    warehouse: ${{ env.DBT_DW_VIRT_WH }}
-              EOF
-              )
-              MY_STRING="${MY_STRING//'%'/'%25'}"
-              MY_STRING="${MY_STRING//$'\n'/'%0A'}"
-              MY_STRING="${MY_STRING//$'\r'/'%0D'}"
-              echo "content={$MY_STRING}" >> $GITHUB_OUTPUT
-            id: my_string
-          - name: display string
-            run: |
-              echo "The profile string is: ${{ steps.my_string.outputs.content }}"
+              mkdir ~/.dbt
+              touch /root/.dbt/profiles.yml
+              echo DBT_PROJECT_NAME >> /root/.dbt/profiles.yml
+              echo DBT_DW_ACCOUNT_URL >> /root/.dbt/profiles.yml
+              echo DBT_DW_USER >> /root/.dbt/profiles.yml
+              echo DBT_DW_PASSWORD >> /root/.dbt/profiles.yml
+              echo DBT_DW_ROLE >> /root/.dbt/profiles.yml
+              echo DBT_DW_SCHEMA >> /root/.dbt/profiles.yml
+              echo DBT_DW_DB >> /root/.dbt/profiles.yml
+              echo DBT_DW_VIRT_WH >> /root/.dbt/profiles.yml
+              echo DBT_NUM_THREADS >> /root/.dbt/profiles.yml
+              echo DBT_QUERY_TAG >> /root/.dbt/profiles.yml
           - name: Get and Use dbt docker image to access dbt project
             uses: addnab/docker-run-action@v3
             with:
@@ -59,13 +56,7 @@ jobs:
                 options: -v ${{ github.workspace }}:/work -e ABC=123
                 shell: bash
                 run: |
-                  ls -ltr
-                  pwd
-                  mkdir ~/.dbt
-                  touch /root/.dbt/profiles.yml
-                  echo -e "${{ steps.my_string.outputs.content }}" >> /root/.dbt/profiles.yml
                   cd /work
-                  ls -ltr /work
                   dbt deps
                   dbt debug
                   dbt compile
