@@ -47,7 +47,7 @@ jobs:
               MY_STRING="${MY_STRING//'%'/'%25'}"
               MY_STRING="${MY_STRING//$'\n'/'%0A'}"
               MY_STRING="${MY_STRING//$'\r'/'%0D'}"
-              echo "{content}={$MY_STRING}" >> $GITHUB_OUTPUT
+              echo "content={$MY_STRING}" >> $GITHUB_OUTPUT
             id: my_string
           - name: display string
             run: |
@@ -59,6 +59,7 @@ jobs:
                 options: -v ${{ github.workspace }}:/work -e ABC=123
                 shell: bash
                 run: |
+                  ls -ltr
                   pwd
                   mkdir ~/.dbt
                   touch /root/.dbt/profiles.yml
