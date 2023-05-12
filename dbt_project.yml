@@ -52,9 +52,7 @@ tests:
     +on_schema_change: append_new_columns
     +full_refresh: null
 
-on-run-end: "{{ dbt_readme_logger.log_results_csv() }}"
-
-# on-run-end: "{{ dbt_artifacts.upload_results(results, include_information=true) }}"
-
-# to display the package results in the logs in addition to storing them in the Data Warehouse
-# on-run-end: "{{ dbt_project_evaluator.print_dbt_project_evaluator_issues() }}"
+on-run-end:
+          - "{{ dbt_readme_logger.log_results_csv() }}"
+          - "{{ dbt_artifacts.upload_results(results, include_information=true) }}
+          - "{{ dbt_project_evaluator.print_dbt_project_evaluator_issues() }}"
