@@ -53,9 +53,9 @@ jobs:
             run: |
               ENCODED_STRING = "${{ steps.my_string.outputs.content }}"
               echo "The ENCODED string is: {$ENCODED_STRING}"
-              DECODED_STRING = "${MY_STRING//'%25'/'%'}"
-              DECODED_STRING="${MY_STRING//'%0A'/$'\n'}"
-              DECODED_STRING="${MY_STRING//'%0D'/$'\r'}"
+              DECODED_STRING = "${ENCODED_STRING//'%25'/'%'}"
+              DECODED_STRING="${ENCODED_STRING//'%0A'/$'\n'}"
+              DECODED_STRING="${ENCODED_STRING//'%0D'/$'\r'}"
               echo "The DECODED string is: {$DECODED_STRING}"
           - name: Get and Use dbt docker image to access dbt project
             uses: addnab/docker-run-action@v3
