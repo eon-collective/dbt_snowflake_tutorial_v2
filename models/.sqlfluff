@@ -28,11 +28,11 @@ aliasing = explicit
 allow_scalar = True
 
 [sqlfluff:rules:capitalisation.identifiers]
-extended_capitalisation_policy = lower
+extended_capitalisation_policy = consistent
 
 [sqlfluff:rules:references.keywords]
-;  Keywords should not be used as identifiers.
-unquoted_identifiers_policy = all
+;  Keywords should not be used as aliasing tables or columns
+unquoted_identifiers_policy = aliases
 
 [sqlfluff:layout:type:comma]
 line_position = trailing
