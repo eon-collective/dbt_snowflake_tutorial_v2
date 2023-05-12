@@ -44,11 +44,19 @@ jobs:
                     warehouse: ${{ env.DBT_DW_VIRT_WH }}
               EOF
               )
+              MY_STRING="${MY_STRING//'%'/'%25'}"
+              MY_STRING="${MY_STRING//$'\n'/'%0A'}"
+              MY_STRING="${MY_STRING//$'\r'/'%0D'}"
               echo "content={$MY_STRING}" >> $GITHUB_OUTPUT
             id: my_string
           - name: display string
             run: |
-              echo "The string is: ${{ steps.my_string.outputs.content }}"
+              ENCODED_STRING =  ${{ steps.my_string.outputs.content }}"
+              echo "The ENCODED string is: {$ENCODED_STRING}"
+              DECODED_STRING = "${MY_STRING//'%25'/'%'}"
+              DECODED_STRING="${MY_STRING//'%0A'/$'\n'}"
+              DECODED_STRING="${MY_STRING//'%0D'/$'\r'}"
+              echo "The DECODED string is: {$DECODED_STRING}"
           - name: Get and Use dbt docker image to access dbt project
             uses: addnab/docker-run-action@v3
             with:
