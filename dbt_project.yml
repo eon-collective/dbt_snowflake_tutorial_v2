@@ -53,6 +53,6 @@ tests:
     +full_refresh: null
 
 on-run-end:
-          - "{{ dbt_readme_logger.log_results_csv() }}"
-          - "{{ dbt_artifacts.upload_results(results, include_information=true) }}
-          - "{{ dbt_project_evaluator.print_dbt_project_evaluator_issues() }}"
+          "{{ dbt_readme_logger.log_results_csv() }}"
+          "{{ dbt_artifacts.upload_results(results, include_information=true) }}
+          "{{ dbt_project_evaluator.print_dbt_project_evaluator_issues() }}"
