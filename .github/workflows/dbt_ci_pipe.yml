@@ -51,7 +51,7 @@ jobs:
             id: my_string
           - name: display string
             run: |
-              ENCODED_STRING =  ${{ steps.my_string.outputs.content }}"
+              ENCODED_STRING = "${{ steps.my_string.outputs.content }}"
               echo "The ENCODED string is: {$ENCODED_STRING}"
               DECODED_STRING = "${MY_STRING//'%25'/'%'}"
               DECODED_STRING="${MY_STRING//'%0A'/$'\n'}"
