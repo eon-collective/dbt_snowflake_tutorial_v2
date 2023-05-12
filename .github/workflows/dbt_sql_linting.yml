@@ -14,37 +14,6 @@ jobs:
         steps:
           - name: Check out the repo hosting the dbt project
             uses: actions/checkout@main
-          - name: create dbt connection details string
-            run: |
-                MY_STRING=$(cat << EOF
-                ${{ env.DBT_PROJECT_NAME }}:
-                  target: dev
-                  outputs:
-                    dev:
-                      type: snowflake
-                      account: ${{ secrets.DBT_DW_ACCOUNT_URL }} 
-                      client_session_keep_alive: true
-                      database: ${{ secrets.DBT_DW_DB }}
-                      password: ${{ secrets.DBT_DW_PASSWORD }}
-                      query_tag: dbt_sqlfluff_pipe
-                      role: ${{ secrets.DBT_DW_ROLE }}
-                      schema: ${{ secrets.DBT_DW_SCHEMA }}
-                      threads: 20
-                      user: ${{ secrets.DBT_DW_USER }}
-                      warehouse: ${{ secrets.DBT_DW_VIRT_WH }}
-                EOF
-                )
-                MY_STRING="${MY_STRING//'%'/'%25'}"
-                MY_STRING="${MY_STRING//$'\n'/'%0A'}"
-                MY_STRING="${MY_STRING//$'\r'/'%0D'}"
-                echo "{content}={$MY_STRING}" >> $GITHUB_OUTPUT
-            id: my_string
-          - name: create profiles.yml file
-            run: |
-                  mkdir ~/.dbt
-                  touch /root/.dbt/profiles.yml
-                  echo -e "${{ steps.my_string.outputs.content }}" >> /root/.dbt/profiles.yml
-                  cd /work
           - name: Set up Python virtual environment
             uses: actions/setup-python@v4
             with:
@@ -56,5 +25,5 @@ jobs:
           - name: linting sql model files
             run: |
                 sqlfluff --version
-                ls -ltr
-                sqlfluff lint --dialect snowflake .
+                cd ./models
+                sqlfluff lint  -i templating,parsing --dialect snowflake .

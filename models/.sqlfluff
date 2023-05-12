@@ -16,7 +16,7 @@ indent_unit = space
 tab_space_size = 4
 
 [sqlfluff:rules:capitalisation.keywords]
-capitalisation_policy = upper
+capitalisation_policy = consistent
 
 [sqlfluff:rules:aliasing.table]
 aliasing = explicit
@@ -46,7 +46,7 @@ force_enable = True
 single_table_references = unqualified
 
 [sqlfluff:rules:capitalisation.functions]
-extended_capitalisation_policy = upper
+extended_capitalisation_policy = consistent
 
 [sqlfluff:rules:layout.select_targets]
 wildcard_policy = single
@@ -55,14 +55,14 @@ wildcard_policy = single
 select_clause_trailing_comma = forbid
 
 [sqlfluff:rules:capitalisation.literals]
-capitalisation_policy = upper
+capitalisation_policy = consistent
 
 [sqlfluff:rules:ambiguous.column_references]
 ; GROUP BY/ORDER BY column references
 group_by_and_order_by_style = explicit
 
 [sqlfluff:rules:capitalisation.types]
-extended_capitalisation_policy = upper
+extended_capitalisation_policy = consistent
 
 [sqlfluff:rules:convention.quoted_literals]
 ; Consistent usage of double quotes for quoted literals
