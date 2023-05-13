@@ -1,4 +1,4 @@
-name: Sqlfluff CI pipe
+name: Sqlfluff CI pipe run
 on:
   push:
     branches: [ "feature/*" ]

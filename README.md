@@ -1,9 +1,9 @@
 <img src="https://static.wixstatic.com/media/95af51_ae2122aebc944721a96afd10f3ccfe0c~mv2.png/v1/fill/w_329,h_45,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/95af51_ae2122aebc944721a96afd10f3ccfe0c~mv2.png" alt="drawing" width="600"/><a name="top-">
 
 
-[![Run SQL Linting for dbt projects](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_sql_linting.yml/badge.svg)](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_sql_linting.yml)
-[![Run CI pipe for dbt projects](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe.yml/badge.svg)](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe.yml) 
-[![Run CI pipe evaluator for dbt projects](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe_evaluator.yml/badge.svg)](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe_evaluator.yml)
+[![SQLfluff linting for dbt projects](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_sql_linting.yml/badge.svg)](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_sql_linting.yml)
+[![CI pipe run for dbt projects](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe.yml/badge.svg)](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe.yml) 
+[![CI project evaluator pipe run for dbt projects](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe_evaluator.yml/badge.svg)](https://github.com/eon-collective/dbt_snowflake_tutorial_v2/actions/workflows/dbt_ci_pipe_evaluator.yml)
 
 # Welcome to Eon Collective dbt® Practices
 
@@ -294,7 +294,7 @@ This application uses the following variables defined in the `dbt_project.yml` f
 | codegen               | 0.9.0   | Macros that generate dbt code, and log it to the command line. |
 | audit_helper          | 0.7.0   | Useful macros when performing data audits   |
 | dbt_meta_testing      | 0.3.6   | Contains macros to assert test and documentation coverage from dbt_project.yml configuration settings. |
-| dbt_readme_helper     | 0.1.1   | Logs information about source, seed, & model nodes to the command line in pipe-delimited csv format. |
+| dbt_readme_helper     | 0.1.1   | Logs information about source, seed, & model nodes to log files in pipe-delimited csv format. |
 | dbt_artifacts_eon     | 0.2.0   | Builds a mart of tables and views describing the dbt project |
 | dbt_project_evaluator | 0.5.0   | Highlights areas of a dbt project that are misaligned with dbt Labs' best practices. |
 
