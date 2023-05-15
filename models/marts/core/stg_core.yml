@@ -48,6 +48,11 @@ models:
     columns: 
       - name: first_name
         description: the first name of each customer
+      - name: id_count
+        description: the number of times that a customer has ordered from Jaffle shop
+        tests:
+          - not_null
+
 
   - name: fct_jaffle_shop_orders
     description: store details about valid orders. i.e. orders that have not been returned or return pending
