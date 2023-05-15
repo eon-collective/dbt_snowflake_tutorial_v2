@@ -1,14 +1,14 @@
 WITH
 orders_source AS (
-    SELECT * FROM {{ source("jaffle_shop", "orders") }}
+    SELECT * FROM {{ ref('stg_orders' ) }}
 ),
 
 transformed_orders AS (
     SELECT
-        id AS order_id,
+        order_id,
         status AS order_status,
         order_date,
-        user_id AS customer_id,
+        customer_id,
         CASE
             WHEN status NOT IN ('returned', 'return_pending') THEN order_date
         END AS valid_order_date
