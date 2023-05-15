@@ -72,7 +72,7 @@ jobs:
             run: dbt run
 
           - name: Run dbt test
-            run: dbt test --select models
+            run: dbt test --select jaffle_shop
 
           - name: Run dbt clean
             run: dbt clean 
