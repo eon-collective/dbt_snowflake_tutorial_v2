@@ -54,5 +54,8 @@ models:
     columns: 
       - name: order_id
         description: primary key
+        tests:
+          - unique
+          - not_null
       - name: valid_order_date
         description: is null when the order status is returned or return pending

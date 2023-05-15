@@ -4,6 +4,7 @@ WITH
 -- 1st CTE -> fetches all customer first names from model stg_customers
 cust_first_names AS (
     SELECT
+        customer_id,
         first_name,
         last_name
     FROM {{ ref("stg_customers") }}

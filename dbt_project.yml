@@ -29,6 +29,8 @@ vars:
   refresh_type: 'MONTHLY'
   env:
       'TEST'
+  dbt_project_evaluator:
+    documentation_coverage_target: 70
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
