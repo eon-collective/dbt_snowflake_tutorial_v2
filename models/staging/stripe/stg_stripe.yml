@@ -2,7 +2,7 @@ version: 2
 
 models:
 # 2 model
-  - name: stg_payment
+  - name: stg_payments
     description: Stripe payment details
   # tests for 4 columns
     columns: 
