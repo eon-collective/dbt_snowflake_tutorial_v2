@@ -46,12 +46,12 @@ tests:
   +severity: error  # all tests produce an error
 
 
-  #  specifying where the raw (sources) data is uploaded and where the dbt models are created
-  dbt_artifacts:
-    +schema: dbt_audit
-    +materialized: view
-    +on_schema_change: append_new_columns
-    +full_refresh: null
+  # #  specifying where the raw (sources) data is uploaded and where the dbt models are created
+  # dbt_artifacts:
+  #   +schema: dbt_audit
+  #   +materialized: view
+  #   +on_schema_change: append_new_columns
+  #   +full_refresh: null
 
 # on-run-end: "{{ dbt_readme_logger.log_results_csv() }}"
 # on-run-end: "{{ dbt_artifacts.upload_results(results, include_information=true) }}"
