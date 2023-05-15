@@ -63,6 +63,7 @@ jobs:
                 pip install dbt-snowflake
                 dbt deps
                 pwd
-                
+                cd .
+                ls -a
           - name: Build dbt project using project evaluator package                
             run: dbt build --select package:dbt_project_evaluator --select jaffle_shop
