@@ -50,8 +50,11 @@ models:
         description: the first name of each customer
       - name: id_count
         description: the number of times that a customer has ordered from Jaffle shop
+      - name:  row_number
+        description: number assigned to customer based on the first letter in their name - serves as primary key
         tests:
           - not_null
+          - unique
 
 
   - name: fct_jaffle_shop_orders
