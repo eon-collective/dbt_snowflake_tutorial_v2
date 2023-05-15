@@ -1,6 +1,8 @@
 version: 2
 sources:
   - name: stripe
+    description: payment details of orders paid for through the stripe platform
     database: raw
     tables:
       - name: payment
+        description: raw stripe payments data

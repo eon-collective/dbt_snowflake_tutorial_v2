@@ -12,7 +12,7 @@ order_status AS (
 ),
 
 pivoted_orders AS (
-    -- 2nd CTE -> fetches records from 1st CTE, query result set and produces a
+    -- 2nd CTE -> fetches records from 1st CTE and produces a
     -- summary of the
     -- status of each customer order
     SELECT
