@@ -1,7 +1,6 @@
 version: 2
 
 models:
-# 3 models
   - name: dim_customers
     description: customer order details such as first_order_date, recent_order_date, number of orders
     columns: 
@@ -44,8 +43,16 @@ models:
       - name: amount
         description: the cost of each order
 
-  - name: str_pivoted_customers
+  - name: dim_pivoted_customers
     description: stores the first names of each customer. The aim is to find out which customers have ordered more than once.
     columns: 
       - name: first_name
         description: the first name of each customer
+
+  - name: fct_jaffle_shop_orders
+    description: store details about valid orders. i.e. orders that have not been returned or return pending
+    columns: 
+      - name: order_id
+        description: primary key
+      - name: valid_order_date
+        description: is null when the order status is returned or return pending
