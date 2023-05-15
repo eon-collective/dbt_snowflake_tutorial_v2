@@ -62,6 +62,5 @@ jobs:
             run: |
                 pip install dbt-snowflake
                 dbt deps
-                ls -a /home/runner/work/dbt_snowflake_tutorial_v2/dbt_snowflake_tutorial_v2/dbt_packages/dbt_project_evaluator/seeds
           - name: Build dbt project using project evaluator package                
-            run: dbt build --select package:dbt_project_evaluator --select jaffle_shop
+            run: dbt build --select package:dbt_project_evaluator dbt_project_evaluator_exceptions
