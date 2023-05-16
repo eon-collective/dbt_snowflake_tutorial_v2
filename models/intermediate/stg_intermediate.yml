@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: int_order_status_pivoted
+    description: order statuses assigned values 0 or 1
+    columns: 
+      - name: order_id
+        description: primary key
+        tests:
+          - unique
+          - not_null
+
+
+  - name: int_orders_pivoted
+    description: payment methods assigned values 0 or 1
+    columns: 
+      - name: order_id
+        description: primary key
+        tests:
+          - unique
+          - not_null

@@ -4,6 +4,7 @@ WITH
 -- 1st CTE -> fetches all customer first names from model stg_customers
 cust_first_names AS (
     SELECT
+        customer_id,
         first_name,
         last_name
     FROM {{ ref("stg_customers") }}
@@ -11,7 +12,13 @@ cust_first_names AS (
 
 -- 2nd CTE -> fetches all customer first names from model stg_customers
 pivoted_customers AS (
-    SELECT first_name FROM cust_first_names GROUP BY 1
+    SELECT
+        first_name,
+        ROW_NUMBER() OVER (ORDER BY first_name ASC) AS row_number,
+        COUNT(customer_id) AS id_count
+    FROM cust_first_names
+    GROUP BY first_name
+    ORDER BY id_count DESC
 )
 
 SELECT *

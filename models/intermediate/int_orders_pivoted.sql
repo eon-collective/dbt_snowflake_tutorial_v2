@@ -1,6 +1,7 @@
 -- setting value of list variable payment_methods.
 -- Easily accessible since it is at the top of the page.
-{% set payment_methods = ["gift_card", "credit_card", "coupon", "bank_transfer"] %}
+{% set payment_methods
+ = ["gift_card", "credit_card", "coupon", "bank_transfer"] %}
 
 WITH  -- 1st CTE -> gets all records from model stg_payments
 stripe_payments AS (
@@ -24,7 +25,7 @@ pivoted_payments AS (
 
     FROM stripe_payments
     WHERE status = 'success'
-    GROUP BY 1
+    GROUP BY order_id
 )
 
 SELECT *

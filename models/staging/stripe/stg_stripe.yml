@@ -1,12 +1,12 @@
 version: 2
 
 models:
-# 2 model
-  - name: stg_payment
+# 1 model
+  - name: stg_payments
     description: Stripe payment details
   # tests for 4 columns
     columns: 
-      - name: id
+      - name: payment_id
         description: primary key for orders
         tests: # singular tests
           - unique
@@ -18,7 +18,7 @@ models:
       - name: created_at
         description: The date the payment was made. Dates are between January 1st, 2018 and April 9th, 2018
       
-      - name: paymentmethod
+      - name: payment_method
         description: "{{ doc('stripe_payment_method') }}"
         tests:
           - accepted_values:

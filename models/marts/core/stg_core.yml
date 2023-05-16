@@ -1,0 +1,69 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: customer order details such as first_order_date, recent_order_date, number of orders
+    columns: 
+      - name: customer_id
+        description: primary key
+        tests:
+          - unique
+          - not_null
+      
+      - name: first_name
+        description: customer's first name 
+      
+      - name: last_name
+        description: customer's last name 
+      
+      - name: number_of_orders
+        description: the total number of orders made by each customer
+      
+      - name: first_order_date
+        description: the date that the customer made their first order
+      
+      - name: more_recent_order_date
+        description: the last date that a customer made an order
+
+  - name: fct_orders
+    description: stores order details such as id, date and amount (ephemeral model)
+    columns: 
+      - name: order_id
+        description: primary key
+        tests:
+          - unique
+          - not_null
+      
+      - name: customer_id
+        description: foreign key
+      
+      - name: order_date
+        description: the date that each order was made 
+      
+      - name: amount
+        description: the cost of each order
+
+  - name: dim_pivoted_customers
+    description: stores the first names of each customer. The aim is to find out which customers have ordered more than once.
+    columns: 
+      - name: first_name
+        description: the first name of each customer
+      - name: id_count
+        description: the number of times that a customer has ordered from Jaffle shop
+      - name:  row_number
+        description: number assigned to customer based on the first letter in their name - serves as primary key
+        tests:
+          - not_null
+          - unique
+
+
+  - name: fct_jaffle_shop_orders
+    description: store details about valid orders. i.e. orders that have not been returned or return pending
+    columns: 
+      - name: order_id
+        description: primary key
+        tests:
+          - unique
+          - not_null
+      - name: valid_order_date
+        description: is null when the order status is returned or return pending

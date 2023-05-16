@@ -1,5 +1,5 @@
 
-# Name your project! Project names should contain only lowercase characters
+# Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
 name: 'jaffle_shop'
@@ -7,8 +7,7 @@ version: '1.4.0'
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
-# profile: 'snowflake-dwh'
-profile: 'default'
+profile: jaffle_shop
 
 # These configurations specify where dbt should look for different types of files.
 # The `source-paths` config, for example, states that models in this project can be
@@ -20,11 +19,19 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
-target-path: "target"  # directory which will store compiled SQL files
+# target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
+  - "logs"
 
+vars:
+  refresh_type: 'MONTHLY'
+  env:
+      'TEST'
+  dbt_project_evaluator:
+    documentation_coverage_target: 70
+    test_coverage_target: 15
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -38,18 +45,21 @@ models:
     marts:
       +materialized: table
   
+tests:
+  +severity: error  # all tests produce an error
 
-  #  specifying where the raw (sources) data is uploaded and where the dbt models are created
-  dbt_artifacts:
-    +schema: dbt_audit
-    +materialized: view
-    +on_schema_change: append_new_columns
-    +full_refresh: null
+seeds:
+  dbt_project_evaluator:
+    dbt_project_evaluator_exceptions:
+      +enabled: false
+
+  # #  specifying where the raw (sources) data is uploaded and where the dbt models are created
+  # dbt_artifacts:
+  #   +schema: dbt_audit
+  #   +materialized: view
+  #   +on_schema_change: append_new_columns
+  #   +full_refresh: null
 
 # on-run-end: "{{ dbt_readme_logger.log_results_csv() }}"
-
-# Not pulling data from the INFORMATION_SCHEMA.TABLES in snowflake
 # on-run-end: "{{ dbt_artifacts.upload_results(results, include_information=true) }}"
-
-# to display the package results in the logs in addition to storing them in the Data Warehouse
 on-run-end: "{{ dbt_project_evaluator.print_dbt_project_evaluator_issues() }}"

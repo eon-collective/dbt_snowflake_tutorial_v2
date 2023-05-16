@@ -2,7 +2,9 @@ version: 2
 
 sources:
   - name: jaffle_shop
+    description: orders and customer data for jaffle shop
     database: raw
     tables:
+      # 2 tables
       - name: customers
       - name: orders

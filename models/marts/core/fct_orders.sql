@@ -18,10 +18,10 @@ order_payments AS (
         SUM(CASE WHEN status = 'success' THEN amount END) AS amount
 
     FROM payments
-    GROUP BY 1
+    GROUP BY order_id
 ),
 
-final AS (
+final_cte AS (
 
     SELECT
         orders.order_id,
@@ -33,4 +33,4 @@ final AS (
     LEFT JOIN order_payments ON orders.order_id = order_payments.order_id
 )
 
-SELECT * FROM final
+SELECT * FROM final_cte

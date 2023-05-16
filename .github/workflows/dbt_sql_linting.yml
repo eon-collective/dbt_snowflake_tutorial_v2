@@ -1,11 +1,11 @@
-name: Run sqlfluff pipe for dbt projects
+name: Sqlfluff CI pipe run
 on:
   push:
     branches: [ "feature/*" ]
   pull_request:
     branches: [ "main" ]
 env:
-  DBT_PROJECT_NAME: dbt_practices
+  DBT_PROJECT_NAME: jaffle_shop
   
 jobs:
     compile:
@@ -14,14 +14,16 @@ jobs:
         steps:
           - name: Check out the repo hosting the dbt project
             uses: actions/checkout@main
-          - name: Get and Use sqlfluff docker image to lint dbt project
-            uses: addnab/docker-run-action@v3
+          - name: Set up Python virtual environment
+            uses: actions/setup-python@v4
             with:
-                image: sqlfluff/sqlfluff:1.4.2
-                options: -v ${{ github.workspace }}:/work -e ABC=123
-                shell: bash
-                run: |
-                  cd /work/models 
-                  sqlfluff --version
-                  ls -ltr
-                  sqlfluff lint -i templating,parsing --dialect snowflake .
+                python-version: '3.10'
+          - name: install sqlfluff python package
+            run: pip install sqlfluff 
+          - name: install sqlfluff templater for dbt
+            run: pip install dbt-snowflake sqlfluff-templater-dbt
+          - name: linting sql model files
+            run: |
+                sqlfluff --version
+                cd ./models
+                sqlfluff lint  -i templating,parsing --dialect snowflake .

@@ -1,24 +1,25 @@
-packages:
-  # installing the package below raises a dbt deps failed with dbt runtime exception: 
-  # Found duplicate project "dbt_utils". This occurs when a dependency has the same project name as some
-  # other dependency.
-  # - package: gitlabhq/snowflake_spend
-  #   version: 1.2.0
-  # - git: "https://github.com/dbt-labs/dbt-utils.git" # git URL
-  # revision: 1.0.0 # tag or branch name
+packages: 
+    # Macros that generate dbt code, and log it to the command line.
   - package: dbt-labs/codegen
     version: 0.9.0
+  
+   # Useful macros when performing data audits
   - package: dbt-labs/audit_helper
-    version: 0.7.0
+    version: 0.9.0
+
+    # Contains macros to assert test and documentation coverage from dbt_project.yml
+    # configuration settings.
   - package: tnightengale/dbt_meta_testing
     version: 0.3.6
-    # This package logs information about source, seed, & model nodes to the command line
-    # in pipe-delimited csv format.
+    
+    # This package logs information about source, seed, & model nodes to the log files in pipe-delimited csv format.
   - git: "https://github.com/eon-collective/dbt_readme_helper.git"
     revision: 0.1.1
 
     # The package builds a mart of tables and views describing the project that it is installed in.
   - git: "https://github.com/eon-collective/dbt_artifacts_eon.git"
     revision: 0.2.0
+    
+    # The package highlights areas of a dbt project that are misaligned with dbt Labs' best practices
   - package: dbt-labs/dbt_project_evaluator
-    version: 0.5.0
+    version: 0.6.0

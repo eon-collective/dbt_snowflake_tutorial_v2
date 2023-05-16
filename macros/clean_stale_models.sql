@@ -37,7 +37,8 @@
 -- fetch their results
 -- accepts the SQL query as a parameter
 {# Return the second column #}
-    {% set drop_queries = run_query(get_drop_commands_query).columns[1].values() %}
+    {% set drop_queries
+     = run_query(get_drop_commands_query).columns[1].values() %}
 
     {% for query in drop_queries %}
 -- loop through the queries
